@@ -10,14 +10,14 @@ public class Groundtile : MonoBehaviour
     public GameObject[] obstaclePrefabs;
     public GameObject platformPrefab;
     public Transform[] obstacleSpawnPoints;
-    public Transform platformSpawnPoint;
+    public Transform[] platformSpawnPoints;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
         SpawnObstacle();
-        SpawnGround();
+        SpawnPlatform();
     }
 
     private void OnTriggerExit(Collider other)
@@ -44,12 +44,13 @@ public class Groundtile : MonoBehaviour
     }
 
     //
-    public void SpawnGround()
+    public void SpawnPlatform()  // used to be SpawnGround but im not sure if thatw as a typoor n0t
     {
-        int chanceOfSpawn = UnityEngine.Random.Range(0, 20); // Random number between 0 and 2
+        int chanceOfSpawn = UnityEngine.Random.Range(0, 20); // Random number between 0 and 20
+        _randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length); //chooses one of available spawn points
         if (chanceOfSpawn == 0)  // 1 out of 20 chance
         {
-            Instantiate(platformPrefab, platformSpawnPoint.position, Quaternion.identity, transform);
+            Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
         }
         
     }

@@ -57,16 +57,12 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space) && isAlive && (isGrounded || isOnPlatform))
         {
-            if (isOnPlatform == false)
-            {
-                Debug.Log("not linked to bottom of platform.");
-            }
             
             Jump();
         }
     }
 
-    public void Jump()
+    public void Jump() //creates the jump
     {
         rb.AddForce(Vector3.up * jumpForce);
     }
