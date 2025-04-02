@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
+
 // Using transforms for prototype. Change to using vectors when have time
 public class PlayerController : MonoBehaviour
 {
@@ -64,5 +66,29 @@ public class PlayerController : MonoBehaviour
     public void Jump()
     {
         rb.AddForce(Vector3.up * jumpForce);
+    }
+    
+    // added for when the player dies by collision
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "RockObsticle")
+        {
+            Dead();
+        }
+        else if (collision.gameObject.name == "IcicleObsticle")
+        {
+            Dead();
+        }
+        else if (collision.gameObject.name == "DeathZone")
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        isAlive = false;
+        // game over panel pops up and user can try again
+        GameManager.Instance.gameOverPanel.SetActive(true);
     }
 }
