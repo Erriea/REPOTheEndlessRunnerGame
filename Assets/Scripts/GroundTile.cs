@@ -5,14 +5,19 @@ using Random = System.Random;
 public class Groundtile : MonoBehaviour
 {
     private GroundSpawner _groundSpawner;
+    private int _randomSpawnPoint;
 
     public GameObject[] obstaclePrefabs;
-    public Transform[] spawnPoints;
+    public GameObject platformPrefab;
+    public Transform[] obstacleSpawnPoints;
+    public Transform platformSpawnPoint;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
         SpawnObstacle();
+        SpawnGround();
     }
 
     private void OnTriggerExit(Collider other)
@@ -28,11 +33,27 @@ public class Groundtile : MonoBehaviour
         
     }
 
-    public void SpawnObstacle()
+    //spawns one of 2 obstacles on a random spawn point set on the tile
+    public void SpawnObstacle() 
     {
-        int randomSpawnPoint = UnityEngine.Random.Range(0, spawnPoints.Length); //chooses one of available spawn points
-        int spawnObsPrefab = UnityEngine.Random.Range(0, obstaclePrefabs.Length);
+        _randomSpawnPoint = UnityEngine.Random.Range(0, obstacleSpawnPoints.Length); //chooses one of available spawn points
+        int spawnObsPrefab = UnityEngine.Random.Range(0, obstaclePrefabs.Length); //chooses a prefab to spawn
         
-        Instantiate(obstaclePrefabs[spawnObsPrefab], spawnPoints[randomSpawnPoint].transform.position, Quaternion.identity, transform);
+        //spawn in the random obstacle prefab in the random spawn point
+        Instantiate(obstaclePrefabs[spawnObsPrefab], obstacleSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+    }
+
+    //
+    public void SpawnGround()
+    {
+        int chanceOfSpawn = UnityEngine.Random.Range(0, 20); // Random number between 0 and 2
+        if (chanceOfSpawn == 0)  // 1 out of 20 chance
+        {
+            Instantiate(platformPrefab, platformSpawnPoint.position, Quaternion.identity, transform);
+        }
+        else
+        {
+            Debug.Log("No platform spawned this time.");
+        }
     }
 }

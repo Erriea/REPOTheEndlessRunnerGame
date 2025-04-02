@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 // Using transforms for prototype. Change to using vectors when have time
+
+//to do - make player register platform ground to jump
 public class PlayerController : MonoBehaviour
 {
     public bool isAlive = true;
@@ -17,6 +19,7 @@ public class PlayerController : MonoBehaviour
     //can also then see variables in an inspector even if private
     [SerializeField] private float jumpForce = 500;
     [SerializeField] private LayerMask groundMask; //used to see whats ground and when to jump
+    [SerializeField] private LayerMask platformMask; //find surface of platform
 
     private void Awake()
     {
@@ -26,16 +29,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isAlive) //should probably change this to work physics based but im doing this for now
+        if (isAlive)
         {
             Vector3 forwardMovement = runSpeed * Time.fixedDeltaTime * transform.forward;
             Vector3 horizontalMovement = _horizontalInput * horizontalSpeed * Time.fixedDeltaTime * transform.right;  
             rb.MovePosition(rb.position + forwardMovement + horizontalMovement);
-            
-            
         }
-
-        
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -53,9 +52,10 @@ public class PlayerController : MonoBehaviour
         float playerHeight = _playerCollider.bounds.size.y; 
         //find if the player is on the ground or not
         bool isGrounded = Physics.Raycast(transform.position, Vector3.down, (playerHeight / 2 + 0.1f), groundMask);
+        bool isOnPlatform = Physics.Raycast(transform.position, Vector3.down, (playerHeight / 2 + 0.1f), platformMask);
         
         
-        if (Input.GetKeyDown(KeyCode.Space) && isAlive && isGrounded == true)
+        if (Input.GetKeyDown(KeyCode.Space) && isAlive && isGrounded == true || isOnPlatform == true)
         {
             Jump();
         }
