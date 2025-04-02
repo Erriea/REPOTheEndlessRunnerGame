@@ -149,7 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2945033857447634830}
   - component: {fileID: 6339356761059288471}
-  - component: {fileID: 3725234732020367490}
+  - component: {fileID: -7995562599248971960}
   m_Layer: 9
   m_Name: PlatformSpawn
   m_TagString: Platform
@@ -196,7 +196,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1.3224078, z: 1.5228547}
   m_Center: {x: -0.004014413, y: 0.6412708, z: 0.7521187}
---- !u!114 &3725234732020367490
+--- !u!114 &-7995562599248971960
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,7 +208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4689f7ed46609624cbe01f6fb7089b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSpawner: {fileID: 0}
   pickupPrefab: {fileID: 3290500347801612181, guid: 1b599c147ffc3024cbeb486e4b39ceab, type: 3}
   pickupSpawnPoint: {fileID: 7640600234529330382}
 --- !u!1 &9186277012691140917

@@ -4,6 +4,8 @@ using Random = System.Random;
 
 public class Groundtile : MonoBehaviour
 {
+    
+    
     private GroundSpawner _groundSpawner;
     private int _randomSpawnPoint;
 
@@ -50,8 +52,28 @@ public class Groundtile : MonoBehaviour
         _randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length); //chooses one of available spawn points
         if (chanceOfSpawn == 0)  // 1 out of 10 chance
         {
-            Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+            //Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+            //SpawnPickup();
+
+            // Instantiate the platform prefab as a gameobject for further use
+            GameObject platform = Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+
+            // Get the PlatformController script from the instantiated platform
+            PlatformController platformControllerInstance = platform.GetComponent<PlatformController>();
+
+            // Check if the script was found before calling SpawnPickup()
+            if (platformControllerInstance != null)
+            {
+                platformControllerInstance.SpawnPickup();
+            }
+            else
+            {
+                Debug.LogError("PlatformController 404");
+            }
+
         }
+        
+        
         
     }
 }
