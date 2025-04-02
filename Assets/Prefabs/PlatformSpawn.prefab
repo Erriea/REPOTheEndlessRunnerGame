@@ -193,8 +193,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 0.19651806, z: 1.5228547}
-  m_Center: {x: -0.004014413, y: 1.2042158, z: 0.7521187}
+  m_Size: {x: 1, y: 1.3224078, z: 1.5228547}
+  m_Center: {x: -0.004014413, y: 0.6412708, z: 0.7521187}
 --- !u!1 &9186277012691140917
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 5444643145617502219}
   - component: {fileID: 3891182227114188482}
   m_Layer: 9
-  m_Name: DeathHit
+  m_Name: PlatformKillZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
