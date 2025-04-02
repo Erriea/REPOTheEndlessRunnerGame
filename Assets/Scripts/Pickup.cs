@@ -39,11 +39,13 @@ public class Pickup : MonoBehaviour
     }
 
 
-    IEnumerator ReturnNormalColour(Renderer playerRenderer, Color playerColor, float activationDuration)
+    IEnumerator ReturnNormalColour(Renderer playerRenderer, Color playerColor, float delay)
     {
-        yield return new WaitForSeconds(activationDuration);
+        yield return new WaitForSeconds(delay);
+        
         
         playerRenderer.material.color = playerColor;
+        
         
     }
 
