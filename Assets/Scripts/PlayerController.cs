@@ -52,11 +52,16 @@ public class PlayerController : MonoBehaviour
         float playerHeight = _playerCollider.bounds.size.y; 
         //find if the player is on the ground or not
         bool isGrounded = Physics.Raycast(transform.position, Vector3.down, (playerHeight / 2 + 0.1f), groundMask);
-        bool isOnPlatform = Physics.Raycast(transform.position, Vector3.down, (playerHeight / 2 + 0.1f), platformMask);
+        bool isOnPlatform = Physics.Raycast(transform.position, Vector3.down, (playerHeight / 2 + 0.5f), platformMask);
         
         
-        if (Input.GetKeyDown(KeyCode.Space) && isAlive && isGrounded == true || isOnPlatform == true)
+        if (Input.GetKeyDown(KeyCode.Space) && isAlive && (isGrounded || isOnPlatform))
         {
+            if (isOnPlatform == false)
+            {
+                Debug.Log("not linked to bottom of platform.");
+            }
+            
             Jump();
         }
     }

@@ -51,9 +51,6 @@ public class Groundtile : MonoBehaviour
         {
             Instantiate(platformPrefab, platformSpawnPoint.position, Quaternion.identity, transform);
         }
-        else
-        {
-            Debug.Log("No platform spawned this time.");
-        }
+        
     }
 }
