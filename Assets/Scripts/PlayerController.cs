@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
         {
             Dead();
         }
-        else if (collision.gameObject.name == "DeathZone")
+        else if (collision.gameObject.name == "PlatformKillZone")
         {
             Dead();
         }

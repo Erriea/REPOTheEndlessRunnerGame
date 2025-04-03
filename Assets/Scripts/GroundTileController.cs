@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 using Random = System.Random;
 
-public class Groundtile : MonoBehaviour
+public class GroundtileController : MonoBehaviour
 {
     
     
-    private GroundSpawner _groundSpawner;
+    private GroundSpawner _groundSpawner; //summons the spawning tiles
     private int _randomSpawnPoint;
 
     public GameObject[] obstaclePrefabs;
@@ -14,10 +14,13 @@ public class Groundtile : MonoBehaviour
     public Transform[] obstacleSpawnPoints;
     public Transform[] platformSpawnPoints;
     
+    
+
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
+        _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>(); //summons the ground spawner
         SpawnObstacle();
         SpawnPlatform();
     }
@@ -25,7 +28,6 @@ public class Groundtile : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         _groundSpawner.SpawnTile();
-        
         Destroy(gameObject, 2f); //destorys tile after 5 seconmds
     }
     

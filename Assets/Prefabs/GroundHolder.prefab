@@ -475,7 +475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1452526134343110620}
   - component: {fileID: 8439216473808061348}
-  - component: {fileID: 7160590335480591194}
+  - component: {fileID: 3482753864344011515}
   m_Layer: 10
   m_Name: GroundHolder
   m_TagString: Untagged
@@ -540,7 +540,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 15, y: 15, z: 20}
   m_Center: {x: 0, y: 0, z: -5}
---- !u!114 &7160590335480591194
+--- !u!114 &3482753864344011515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
