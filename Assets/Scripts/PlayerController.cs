@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed; 
     public float horizontalSpeed; 
     //private bool _destroysObstacles = false;
-    private bool _pickIsActive = false;
+    private bool _pickIsActive;
 
     public Rigidbody rb; //make reference to the rigidbody i added to the capusle 
     
@@ -154,11 +154,12 @@ public class PlayerController : MonoBehaviour
    //}
     
    
+   //shouldnt it be in pickup?
+   //ill look at it if we have time
    
-   /*
     public void ActivatePickup()
     {
-        pickIsActive = true;
+        _pickIsActive = true;
 
         // Disable collisions between player and all obstacles
         Collider[] allColliders = FindObjectsOfType<Collider>();
@@ -175,20 +176,21 @@ public class PlayerController : MonoBehaviour
     
     private IEnumerator DisablePickup()
     {
+        // waits for 5 seconds before re-enabling the colliders for the obstacles
         yield return new WaitForSeconds(5f);
 
-        pickIsActive = false;
+        _pickIsActive = false;
 
         // Re-enable collisions with all obstacles
-        Collider[] allColliders = FindObjectsOfType<Collider>();
-        foreach (Collider collider in allColliders)
+        Collider[] obstacleColliders = FindObjectsOfType<Collider>();
+        foreach (Collider obstacleCollider in obstacleColliders)
         {
-            if (collider.gameObject.CompareTag("Obstacle")) 
+            if (obstacleCollider.CompareTag("Obstacle")) 
             {
-                Physics.IgnoreCollision(collider, _playerCollider, false);
+                Physics.IgnoreCollision(GetComponent<Collider>(), _playerCollider, false);
             }
         }
     }
-    */
+    
     
 }
