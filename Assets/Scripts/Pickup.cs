@@ -6,7 +6,8 @@ public class Pickup : MonoBehaviour
     [SerializeField] private float activationDuration = 5f;
     private Material _material;
     private Renderer _renderer;
-    [SerializeField] Color[] colours;
+    [SerializeField] Color[] colours; 
+    
 
 
 // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,6 +21,12 @@ public class Pickup : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        //if (other.CompareTag("Player")) 
+        //{  // Check if the player picks up the item
+        //    other.GetComponent<PlayerController>().ActivateDestroyMode(); // Enable destruction mode
+        //    Destroy(gameObject);  // Destroy the pickup object
+        //}
+        
         if (!other.CompareTag("Player"))
             return;
 
@@ -39,13 +46,21 @@ public class Pickup : MonoBehaviour
     }
 
 
-    IEnumerator ReturnNormalColour(Renderer playerRenderer, Color playerColor, float delay)
+    IEnumerator ReturnNormalColour(Renderer playerRenderer, Color playerColor, float activationDuration)
     {
-        yield return new WaitForSeconds(delay);
+        Color originalColor = playerRenderer.material.color;
+        
+        playerRenderer.material.color = _material.color;
 
+        // Wait for the specified duration
+        yield return new WaitForSeconds(activationDuration);
 
-        playerRenderer.material.color = playerColor;
-
-
+        // Revert to the original color
+        playerRenderer.material.color = originalColor;
+        
     }
+    
+    
+    
+    
 }

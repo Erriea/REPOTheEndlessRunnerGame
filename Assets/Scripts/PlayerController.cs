@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 // Using transforms for prototype. Change to using vectors when have time
 
@@ -8,6 +9,8 @@ public class PlayerController : MonoBehaviour
     public bool isAlive = true;
     public float runSpeed;
     public float horizontalSpeed;
+    private bool destroysObstacles = false;
+    private bool pickIsActive = false;
 
     public Rigidbody rb; //make reference to the rigidbody i added to the capusle
     
@@ -20,7 +23,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 500;
     [SerializeField] private LayerMask groundMask; //used to see whats ground and when to jump
     [SerializeField] private LayerMask platformMask; //find surface of platform
-
+    [SerializeField] private LayerMask obstacleMask;
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,7 +44,23 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Collider playerCollider = GetComponent<Collider>();
         
+        GameObject obstacle = GameObject.FindWithTag("Obstacle");
+
+        if (obstacle != null)
+        {
+            // Get the collider of the obstacle
+            Collider obstacleCollider = obstacle.GetComponent<Collider>();
+
+            if (obstacleCollider != null)
+            {
+                // Ignore collision between the player's collider and the obstacle's collider
+                Physics.IgnoreCollision(playerCollider, obstacleCollider, true);
+                Debug.Log("Collision ignored with obstacle.");
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -64,6 +84,8 @@ public class PlayerController : MonoBehaviour
             
             Jump();
         }
+        
+        
     }
 
     public void Jump()
@@ -74,24 +96,93 @@ public class PlayerController : MonoBehaviour
     // added for when the player dies by collision
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "RockObsticle")
+        if (!pickIsActive && collision.gameObject.CompareTag("Obstacle")) 
+        {
+            // Ignore collisions while the pickup is active
+            Dead();
+        }
+        
+        if (collision.gameObject.name == "RockObsticle" && pickIsActive == false)
         {
             Dead();
         }
-        else if (collision.gameObject.name == "IcicleObsticle")
+        else if (GameObject.FindGameObjectsWithTag("Obstacle").Length == 0)
+        {
+            Destroy(collision.gameObject);
+        }
+        
+        if (collision.gameObject.name == "IcicleObsticle")
         {
             Dead();
         }
-        else if (collision.gameObject.name == "DeathZone")
+        else if (collision.gameObject.name == "IcicleObsticle" && pickIsActive == true)
+        {
+            Destroy(collision.gameObject);
+        }
+        
+        if (collision.gameObject.name == "PlatformKillZone")
         {
             Dead();
         }
+        else if (collision.gameObject.name == "PlatformKillZone" && pickIsActive == true)
+        {
+            Destroy(collision.gameObject);
+        }
+        
     }
 
     void Dead()
     {
         isAlive = false;
+        StopAllCoroutines();
         // game over panel pops up and user can try again
         GameManager.Instance.gameOverPanel.SetActive(true);
+        
     }
+    
+   //public void ActivateDestroyMode() {
+   //    destroysObstacles = true;  // Enable object destruction
+   //    StartCoroutine(DisableDestroyMode());  // Start timer to disable it
+   //}
+
+   //private IEnumerator DisableDestroyMode() {
+   //    yield return new WaitForSeconds(5f);  // Wait 5 seconds
+   //    destroysObstacles = false;  // Disable object destruction
+   //}
+    
+    public void ActivatePickup()
+    {
+        pickIsActive = true;
+
+        // Disable collisions between player and all obstacles
+        Collider[] allColliders = FindObjectsOfType<Collider>();
+        foreach (Collider obstacle in allColliders)
+        {
+            if (obstacle.gameObject.CompareTag("Obstacle")) 
+            {
+                Physics.IgnoreCollision(obstacle, _playerCollider, true);
+            }
+        }
+
+        StartCoroutine(DisablePickup());
+    }
+    
+    private IEnumerator DisablePickup()
+    {
+        yield return new WaitForSeconds(5f);
+
+        pickIsActive = false;
+
+        // Re-enable collisions with all obstacles
+        Collider[] allColliders = FindObjectsOfType<Collider>();
+        foreach (Collider collider in allColliders)
+        {
+            if (collider.gameObject.CompareTag("Obstacle")) 
+            {
+                Physics.IgnoreCollision(collider, _playerCollider, false);
+            }
+        }
+    }
+
+  
 }

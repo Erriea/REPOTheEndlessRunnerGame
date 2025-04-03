@@ -53,4 +53,13 @@ public class Groundtile : MonoBehaviour
         }
         
     }
+    
+    // ADDITIONAL CODEEE
+    //void OnObjectDestroy()
+    //{
+    //    if (ScoreManager.Instance != null)
+    //    {
+    //        ScoreManager.Instance.IncrementScore(1);
+    //    }
+    //}
 }
