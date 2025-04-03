@@ -2,21 +2,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 // Using transforms for prototype. Change to using vectors when have time
+//cleared for past
 
 //to do - make player register platform ground to jump
 public class PlayerController : MonoBehaviour
 {
-    public bool isAlive = true;
-    public float runSpeed;
-    public float horizontalSpeed;
-    private bool destroysObstacles = false;
-    private bool pickIsActive = false;
+    public bool isAlive = true; 
+    public float runSpeed; 
+    public float horizontalSpeed; 
+    //private bool _destroysObstacles = false;
+    private bool _pickIsActive = false;
 
-    public Rigidbody rb; //make reference to the rigidbody i added to the capusle
+    public Rigidbody rb; //make reference to the rigidbody i added to the capusle 
     
-    private Collider _playerCollider; //stores player collider
+    private Collider _playerCollider; //stores player collider 
     
-    float _horizontalInput;
+    float _horizontalInput; 
 
     //serialized coz u can make it public but cannot change it from other scripts
     //can also then see variables in an inspector even if private
@@ -44,6 +45,8 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // checks if player collides with obstacle (g)
+        
         Collider playerCollider = GetComponent<Collider>();
         
         GameObject obstacle = GameObject.FindWithTag("Obstacle");
@@ -96,13 +99,13 @@ public class PlayerController : MonoBehaviour
     // added for when the player dies by collision
     private void OnCollisionEnter(Collision collision)
     {
-        if (!pickIsActive && collision.gameObject.CompareTag("Obstacle")) 
+        if (!_pickIsActive && collision.gameObject.CompareTag("Obstacle")) 
         {
             // Ignore collisions while the pickup is active
             Dead();
         }
         
-        if (collision.gameObject.name == "RockObsticle" && pickIsActive == false)
+        if (collision.gameObject.name == "RockObsticle" && _pickIsActive == false)
         {
             Dead();
         }
@@ -115,7 +118,7 @@ public class PlayerController : MonoBehaviour
         {
             Dead();
         }
-        else if (collision.gameObject.name == "IcicleObsticle" && pickIsActive == true)
+        else if (collision.gameObject.name == "IcicleObsticle" && _pickIsActive == true)
         {
             Destroy(collision.gameObject);
         }
@@ -124,7 +127,7 @@ public class PlayerController : MonoBehaviour
         {
             Dead();
         }
-        else if (collision.gameObject.name == "PlatformKillZone" && pickIsActive == true)
+        else if (collision.gameObject.name == "PlatformKillZone" && _pickIsActive == true)
         {
             Destroy(collision.gameObject);
         }
@@ -150,6 +153,9 @@ public class PlayerController : MonoBehaviour
    //    destroysObstacles = false;  // Disable object destruction
    //}
     
+   
+   
+   /*
     public void ActivatePickup()
     {
         pickIsActive = true;
@@ -183,6 +189,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
+    */
     
 }

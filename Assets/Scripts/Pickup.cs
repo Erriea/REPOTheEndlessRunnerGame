@@ -37,6 +37,8 @@ public class Pickup : MonoBehaviour
 
         Destroy(gameObject);
     }
+    
+    
 
 
     IEnumerator ReturnNormalColour(Renderer playerRenderer, Color playerColor, float delay)

@@ -573,7 +573,7 @@ MonoBehaviour:
   - {fileID: 7605492776134078169}
   - {fileID: 4558376266043865006}
   - {fileID: 3593723933079831243}
-  platformSpawnPoint:
+  platformSpawnPoints:
   - {fileID: 6287019122115729416}
   - {fileID: 703402543002530935}
 --- !u!1 &6241899092038317361

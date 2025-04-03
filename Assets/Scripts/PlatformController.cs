@@ -5,7 +5,6 @@ using Random = System.Random;
 public class PlatformController : MonoBehaviour
 {
     private GroundSpawner _groundSpawner;
-
     
     public GameObject pickupPrefab;
     public Transform pickupSpawnPoint;

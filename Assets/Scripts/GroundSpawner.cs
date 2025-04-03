@@ -3,7 +3,7 @@ using UnityEngine;
 public class GroundSpawner : MonoBehaviour
 {
     [SerializeField] GameObject groundTilePrefab;
-    [SerializeField] GameObject enemyTilePrefab;
+    //[SerializeField] GameObject enemyTilePrefab;
 
     private Vector3 _nextSpawnPoint;
     
@@ -81,6 +81,7 @@ public class GroundSpawner : MonoBehaviour
         _nextSpawnPoint = tempGround.transform.GetChild(1).position; 
     }
 
+    
     public void SpawnEnemyTile()
     {
         GameObject tempGround = Instantiate(groundTilePrefab, _nextSpawnPoint, Quaternion.identity);

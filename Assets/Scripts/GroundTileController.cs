@@ -12,14 +12,14 @@ public class GroundtileController : MonoBehaviour
     public GameObject[] obstaclePrefabs;
     public GameObject platformPrefab;
     public Transform[] obstacleSpawnPoints;
-    public Transform[] platformSpawnPoint;
+    public Transform[] platformSpawnPoints;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
         SpawnObstacle();
-        SpawnGround();
+        SpawnPlatform();
     }
 
     private void OnTriggerExit(Collider other)
@@ -46,14 +46,32 @@ public class GroundtileController : MonoBehaviour
     }
 
     //
-    public void SpawnGround()
+    public void SpawnPlatform()
     {
-        int chanceOfSpawn = UnityEngine.Random.Range(0, 20); // Random number between 0 and 2
-        if (chanceOfSpawn == 0)  // 1 out of 20 chance
+        /*
+        int chanceOfSpawn = UnityEngine.Random.Range(0, 10); // Random number between 0 and 9
+        if (chanceOfSpawn == 0)  // 1 out of 10 chance
         {
-            Instantiate(platformPrefab, obstacleSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+            Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
         }
+        */
+        
+        int chanceOfSpawn = UnityEngine.Random.Range(0, 10); 
+        _randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length);
 
+        if (chanceOfSpawn == 0)
+        {
+            GameObject platform = Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position,
+                Quaternion.identity, transform);
+
+            // Get the PlatformController component from the spawned platform
+            PlatformController platformControllerInstance = platform.GetComponent<PlatformController>();
+
+            if (platformControllerInstance != null)
+            {
+                platformControllerInstance.SpawnPickup(); // Call the function that spawns pickups
+            }
+        }
     }
 
     // ADDITIONAL CODEEE
