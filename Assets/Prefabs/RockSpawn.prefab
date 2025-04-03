@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 71563045368943381}
   - component: {fileID: 3635107867550841244}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RockKillZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - component: {fileID: 3564407863940945220}
   - component: {fileID: 4945647526828603918}
   - component: {fileID: 9188567375101626073}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RockObsticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 125739396933522552}
   - component: {fileID: 4493000863276768694}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RockSpawn
   m_TagString: Obstacle
   m_Icon: {fileID: 0}

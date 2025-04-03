@@ -140,6 +140,7 @@ public class PlayerController : MonoBehaviour
         
     }
     
+    // attempting to make things work here
    //public void ActivateDestroyMode() {
    //    destroysObstacles = true;  // Enable object destruction
    //    StartCoroutine(DisableDestroyMode());  // Start timer to disable it
@@ -153,14 +154,13 @@ public class PlayerController : MonoBehaviour
     public void ActivatePickup()
     {
         pickIsActive = true;
-
-        // Disable collisions between player and all obstacles
-        Collider[] allColliders = FindObjectsOfType<Collider>();
-        foreach (Collider obstacle in allColliders)
+        
+        Collider[] obstacleColliders = Physics.OverlapSphere(transform.position, 50f, obstacleMask);
+        foreach (Collider obstacleCollider in obstacleColliders)
         {
-            if (obstacle.gameObject.CompareTag("Obstacle")) 
+            if (obstacleCollider.gameObject.CompareTag("Obstacle")) 
             {
-                Physics.IgnoreCollision(obstacle, _playerCollider, true);
+                Physics.IgnoreCollision(_playerCollider, obstacleCollider, true);
             }
         }
 
@@ -169,17 +169,18 @@ public class PlayerController : MonoBehaviour
     
     private IEnumerator DisablePickup()
     {
+        // waits for 5 seconds before re-enabling the colliders for the obstacles
         yield return new WaitForSeconds(5f);
 
         pickIsActive = false;
 
         // Re-enable collisions with all obstacles
-        Collider[] allColliders = FindObjectsOfType<Collider>();
-        foreach (Collider collider in allColliders)
+        Collider[] obstacleColliders = FindObjectsOfType<Collider>();
+        foreach (Collider obstacleCollider in obstacleColliders)
         {
-            if (collider.gameObject.CompareTag("Obstacle")) 
+            if (obstacleCollider.CompareTag("Obstacle")) 
             {
-                Physics.IgnoreCollision(collider, _playerCollider, false);
+                Physics.IgnoreCollision(GetComponent<Collider>(), _playerCollider, false);
             }
         }
     }
