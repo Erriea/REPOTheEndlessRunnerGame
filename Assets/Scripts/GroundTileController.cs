@@ -6,76 +6,62 @@ public class GroundtileController : MonoBehaviour
 {
     
     
-    private GroundSpawner _groundSpawner; //summons the spawning tiles
+    private GroundSpawner _groundSpawner;
     private int _randomSpawnPoint;
 
     public GameObject[] obstaclePrefabs;
     public GameObject platformPrefab;
     public Transform[] obstacleSpawnPoints;
-    public Transform[] platformSpawnPoints;
-    
-    
+    public Transform platformSpawnPoint;
 
-    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>(); //summons the ground spawner
+        _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
         SpawnObstacle();
-        SpawnPlatform();
+        SpawnGround();
     }
 
     private void OnTriggerExit(Collider other)
     {
         _groundSpawner.SpawnTile();
+
         Destroy(gameObject, 2f); //destorys tile after 5 seconmds
     }
-    
+
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //spawns one of 2 obstacles on a random spawn point set on the tile
-    private void SpawnObstacle() 
+    public void SpawnObstacle() 
     {
         _randomSpawnPoint = UnityEngine.Random.Range(0, obstacleSpawnPoints.Length); //chooses one of available spawn points
         int spawnObsPrefab = UnityEngine.Random.Range(0, obstaclePrefabs.Length); //chooses a prefab to spawn
-        
+
         //spawn in the random obstacle prefab in the random spawn point
         Instantiate(obstaclePrefabs[spawnObsPrefab], obstacleSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
     }
 
     //
-    private void SpawnPlatform()  // used to be SpawnGround but im not sure if thatw as a typoor n0t
+    public void SpawnGround()
     {
-        int chanceOfSpawn = UnityEngine.Random.Range(0, 10); // Random number between 0 and 9
-        _randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length); //chooses one of available spawn points
-        if (chanceOfSpawn == 0)  // 1 out of 10 chance
+        int chanceOfSpawn = UnityEngine.Random.Range(0, 20); // Random number between 0 and 2
+        if (chanceOfSpawn == 0)  // 1 out of 20 chance
         {
-            //Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
-            //SpawnPickup();
-
-            // Instantiate the platform prefab as a gameobject for further use
-            GameObject platform = Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
-
-            // Get the PlatformController script from the instantiated platform
-            PlatformController platformControllerInstance = platform.GetComponent<PlatformController>();
-
-            // Check if the script was found before calling SpawnPickup()
-            if (platformControllerInstance != null)
-            {
-                platformControllerInstance.SpawnPickup();
-            }
-            else
-            {
-                Debug.LogError("PlatformController 404");
-            }
-
+            Instantiate(platformPrefab, platformSpawnPoint.position, Quaternion.identity, transform);
         }
-        
-        
-        
+
     }
+
+    // ADDITIONAL CODEEE
+    //void OnObjectDestroy()
+    //{
+    //    if (ScoreManager.Instance != null)
+    //    {
+    //        ScoreManager.Instance.IncrementScore(1);
+    //    }
+    //}
 }
