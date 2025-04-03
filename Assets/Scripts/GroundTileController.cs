@@ -12,7 +12,7 @@ public class GroundtileController : MonoBehaviour
     public GameObject[] obstaclePrefabs;
     public GameObject platformPrefab;
     public Transform[] obstacleSpawnPoints;
-    public Transform platformSpawnPoint;
+    public Transform[] platformSpawnPoint;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -51,7 +51,7 @@ public class GroundtileController : MonoBehaviour
         int chanceOfSpawn = UnityEngine.Random.Range(0, 20); // Random number between 0 and 2
         if (chanceOfSpawn == 0)  // 1 out of 20 chance
         {
-            Instantiate(platformPrefab, platformSpawnPoint.position, Quaternion.identity, transform);
+            Instantiate(platformPrefab, obstacleSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
         }
 
     }
