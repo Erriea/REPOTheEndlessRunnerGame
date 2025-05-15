@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7135657854584523922}
   - component: {fileID: 5895135668509726723}
   - component: {fileID: 8397992725757748220}
-  - component: {fileID: 6861315545083319561}
+  - component: {fileID: 2207342770390186419}
   m_Layer: 0
   m_Name: PickupSpawn
   m_TagString: Untagged
@@ -170,7 +170,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6861315545083319561
+--- !u!114 &2207342770390186419
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,12 +179,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3290500347801612181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a556befffa35c4db204ced66185778, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c9cb835616ee6747ae38221fd0ba72c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activationDuration: 5
-  colours:
-  - {r: 0.85098046, g: 0.24705884, b: 0.20392159, a: 0}
+  multiplier: 2
 --- !u!1 &6868159976719495699
 GameObject:
   m_ObjectHideFlags: 0

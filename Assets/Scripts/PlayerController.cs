@@ -143,6 +143,15 @@ public class PlayerController : MonoBehaviour
         
     }
     
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Obstacle"))
+        {
+            Debug.Log("Player has hit obstacle ");
+            ScoreManager.Instance.StopScoring();
+        }
+    }
+    
    //public void ActivateDestroyMode() {
    //    destroysObstacles = true;  // Enable object destruction
    //    StartCoroutine(DisableDestroyMode());  // Start timer to disable it
