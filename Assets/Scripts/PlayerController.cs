@@ -7,6 +7,10 @@ using UnityEngine;
 //to do - make player register platform ground to jump
 public class PlayerController : MonoBehaviour
 {
+    public bool isInvincible = true; // added to player controller
+    private Coroutine invincibiltyCoroutine;
+    //[SerializeField] private float invincDuration = 8f;
+
     public bool isAlive = true; 
     public float runSpeed; 
     public float horizontalSpeed; 
@@ -99,41 +103,91 @@ public class PlayerController : MonoBehaviour
     // added for when the player dies by collision
     private void OnCollisionEnter(Collision collision)
     {
-        if (!_pickIsActive && collision.gameObject.CompareTag("Obstacle")) 
+        if (collision.gameObject.CompareTag("Obstacle"))
         {
-            // Ignore collisions while the pickup is active
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        
-        if (collision.gameObject.name == "RockObsticle" && _pickIsActive == false)
+
+        // Rock obstacle
+        if (collision.gameObject.name == "RockObsticle")
         {
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        else if (GameObject.FindGameObjectsWithTag("Obstacle").Length == 0)
-        {
-            Destroy(collision.gameObject);
-        }
-        
+
+        // Icicle obstacle
         if (collision.gameObject.name == "IcicleObsticle")
         {
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        else if (collision.gameObject.name == "IcicleObsticle" && _pickIsActive == true)
-        {
-            Destroy(collision.gameObject);
-        }
-        
+
+        // Platform Kill Zone
         if (collision.gameObject.name == "PlatformKillZone")
         {
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        else if (collision.gameObject.name == "PlatformKillZone" && _pickIsActive == true)
+        
+
+        // Clean up any remaining obstacle if all are gone
+        if (GameObject.FindGameObjectsWithTag("Obstacle").Length == 0)
         {
             Destroy(collision.gameObject);
         }
         
     }
 
+    
+    // Added for part 2
+    public IEnumerator InvincibiltityCoroutine(float invicDuration)
+    {
+        isInvincible = true;
+        yield return new WaitForSeconds(invicDuration);
+        isInvincible = false;
+        invincibiltyCoroutine = null;
+    }
+
+    public void StartInvincibility(float invicDuration)
+    {
+        if (invincibiltyCoroutine != null)
+        {
+            StopCoroutine(invincibiltyCoroutine);
+        }
+
+        invincibiltyCoroutine = StartCoroutine(InvincibiltityCoroutine(invicDuration));
+    }
+        
+    //
     void Dead()
     {
         isAlive = false;

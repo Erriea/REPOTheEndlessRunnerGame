@@ -5,7 +5,7 @@ public class DoublePointsPickUp : MonoBehaviour
 {
     [SerializeField] private float multiplier = 2f;
 
-    [SerializeField] private float multiplierDuration = 5f;
+    [SerializeField] private float multiplierDuration = 8f;
 
     private void OnTriggerEnter(Collider other)
     {
