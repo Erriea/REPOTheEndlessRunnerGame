@@ -16,7 +16,7 @@ public class InvincibilityPickUp : MonoBehaviour
 
         if (player != null)
         {
-            player.StartInvincibility(invincDuration); // 💡 Correctly trigger it here
+            player.StartInvincibility(invincDuration); 
         }
 
         GlowBoost glow = other.GetComponent<GlowBoost>();
