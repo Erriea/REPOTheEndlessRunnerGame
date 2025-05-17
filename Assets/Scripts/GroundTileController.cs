@@ -4,8 +4,7 @@ using Random = System.Random;
 
 public class GroundtileController : MonoBehaviour
 {
-    
-    
+
     private GroundSpawner _groundSpawner;
     private int _randomSpawnPoint;
 
@@ -15,18 +14,19 @@ public class GroundtileController : MonoBehaviour
     public Transform[] platformSpawnPoints;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
         SpawnObstacle();
         SpawnPlatform();
     }
 
+    //looks for what to spawn next tile
     private void OnTriggerExit(Collider other)
     {
         _groundSpawner.SpawnTile();
 
-        Destroy(gameObject, 2f); //destorys tile after 5 seconmds
+        Destroy(gameObject, 5f); //destorys tile after 5 seconmds
     }
 
     // Update is called once per frame
