@@ -15,6 +15,14 @@ public class DoublePointsPickUp : MonoBehaviour
         ScoreManager.Instance.StartMultiplier(multiplier, multiplierDuration);
         Debug.Log("Double points picked up");
         
+        GlowBoost glow = other.GetComponent<GlowBoost>();
+        if (glow != null)
+        {
+            glow.StartGlow(duration: multiplierDuration);
+            Debug.Log("Glow started");
+        }
+
+        
         Destroy(gameObject);
     }
 }

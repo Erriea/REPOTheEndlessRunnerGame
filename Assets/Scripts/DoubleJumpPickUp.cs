@@ -16,6 +16,14 @@ public class DoubleJumpPickUp : MonoBehaviour
         {
             player.StartDoubleJump(doubleJumpForce, jumpDuration);
         }
+        
+        GlowBoost glow = other.GetComponent<GlowBoost>();
+        if (glow != null)
+        {
+            glow.StartGlow(duration: jumpDuration);
+            Debug.Log("Glow started");
+        }
+
 
         Destroy(gameObject);
     }
