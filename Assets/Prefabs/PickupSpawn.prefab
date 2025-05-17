@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7135657854584523922}
   - component: {fileID: 5895135668509726723}
   - component: {fileID: 8397992725757748220}
-  - component: {fileID: -4391674357660026506}
+  - component: {fileID: -3082795164909946552}
   m_Layer: 0
   m_Name: PickupSpawn
   m_TagString: Untagged
@@ -170,7 +170,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-4391674357660026506
+--- !u!114 &-3082795164909946552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

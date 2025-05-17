@@ -7,7 +7,7 @@ using UnityEngine;
 //to do - make player register platform ground to jump
 public class PlayerController : MonoBehaviour
 {
-    public bool isInvincible = true; // added to player controller
+    public bool isInvincible = false; // added to player controller
     private Coroutine invincibiltyCoroutine; //added to player controller
 
     private float baseJumpForce;//added to player controller
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         _playerCollider = GetComponent<Collider>(); //instantiates the player collider
+        isInvincible = false;
     }
 
     private void FixedUpdate()
@@ -175,9 +176,11 @@ public class PlayerController : MonoBehaviour
     public IEnumerator InvincibiltityCoroutine(float invincDuration)
     {
         isInvincible = true;
+        Debug.Log("Invincible");
         yield return new WaitForSeconds(invincDuration);
         isInvincible = false;
         invincibiltyCoroutine = null;
+        Debug.Log("Invincible Ended");
     }
 
     public void StartInvincibility(float invincDuration)
@@ -185,6 +188,7 @@ public class PlayerController : MonoBehaviour
         if (invincibiltyCoroutine != null)
         {
             StopCoroutine(invincibiltyCoroutine);
+            Debug.Log("Stopped previous coroutine");
         }
 
         invincibiltyCoroutine = StartCoroutine(InvincibiltityCoroutine(invincDuration));
