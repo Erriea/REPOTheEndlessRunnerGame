@@ -8,8 +8,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public bool isInvincible = true; // added to player controller
-    private Coroutine invincibiltyCoroutine;
-    //[SerializeField] private float invincDuration = 8f;
+    private Coroutine invincibiltyCoroutine; //added to player controller
+
+    private float baseJumpForce;//added to player controller
+    private Coroutine doubleJumpCoroutine;//added to player controller
 
     public bool isAlive = true; 
     public float runSpeed; 
@@ -25,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     //serialized coz u can make it public but cannot change it from other scripts
     //can also then see variables in an inspector even if private
-    [SerializeField] private float jumpForce = 500;
+    [SerializeField] private float jumpForce = 400f;
     [SerializeField] private LayerMask groundMask; //used to see whats ground and when to jump
     [SerializeField] private LayerMask platformMask; //find surface of platform
     [SerializeField] private LayerMask obstacleMask;
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        baseJumpForce = jumpForce;
         // checks if player collides with obstacle (g)
         
         Collider playerCollider = GetComponent<Collider>();
@@ -169,22 +172,43 @@ public class PlayerController : MonoBehaviour
 
     
     // Added for part 2
-    public IEnumerator InvincibiltityCoroutine(float invicDuration)
+    public IEnumerator InvincibiltityCoroutine(float invincDuration)
     {
         isInvincible = true;
-        yield return new WaitForSeconds(invicDuration);
+        yield return new WaitForSeconds(invincDuration);
         isInvincible = false;
         invincibiltyCoroutine = null;
     }
 
-    public void StartInvincibility(float invicDuration)
+    public void StartInvincibility(float invincDuration)
     {
         if (invincibiltyCoroutine != null)
         {
             StopCoroutine(invincibiltyCoroutine);
         }
 
-        invincibiltyCoroutine = StartCoroutine(InvincibiltityCoroutine(invicDuration));
+        invincibiltyCoroutine = StartCoroutine(InvincibiltityCoroutine(invincDuration));
+    }
+    
+    
+    // added for part 2
+    
+    public IEnumerator DoubleJumpCoroutine(float doubleJumpForce, float jumpDuration)
+    {
+        jumpForce = doubleJumpForce;
+        yield return new WaitForSeconds(jumpDuration);
+        jumpForce = baseJumpForce;
+        doubleJumpCoroutine = null;
+    }
+
+    public void StartDoubleJump(float doubleJumpForce, float jumpDuration)
+    {
+        if (doubleJumpCoroutine != null)
+        {
+            StopCoroutine(doubleJumpCoroutine);
+        }
+
+        doubleJumpCoroutine = StartCoroutine(DoubleJumpCoroutine(doubleJumpForce, jumpDuration));
     }
         
     //
