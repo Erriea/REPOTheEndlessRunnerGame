@@ -16,7 +16,7 @@ public class MainMenuController : MonoBehaviour
                 ?.GetComponent<TextMeshProUGUI>();
 
         int best = PlayerPrefs.GetInt("HighScore", 0);
-        highScoreText.text = $"High Score: {best}";
+        highScoreText.text = "High Score: " + best.ToString();
     }
     
     void Start()
