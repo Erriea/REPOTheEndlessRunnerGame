@@ -99,5 +99,14 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-   
+    public void SaveHighScore()
+    {
+        int best = PlayerPrefs.GetInt("HighScore", 0);   // default 0
+        if (playerScore > best)
+        {
+            PlayerPrefs.SetInt("HighScore", playerScore);
+            PlayerPrefs.Save();               // write to disk
+            Debug.Log($"New high-score: {playerScore}");
+        }
+    }
 }
