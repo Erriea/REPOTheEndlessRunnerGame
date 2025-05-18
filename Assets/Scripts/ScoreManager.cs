@@ -2,12 +2,14 @@ using System.Collections;
 using TMPro;
 using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance{get; private set;}
     public int playerScore { get; private set; }
     public TextMeshProUGUI scoreText; // Assign in Inspector
+    public TextMeshProUGUI endScoreText;
     private float scoreMultiplier = 1f;
     public bool isAlive = true;
 
@@ -54,7 +56,7 @@ public class ScoreManager : MonoBehaviour
             StopCoroutine(scoreCoroutine);
             scoreCoroutine = null;
         }
-    }
+    } 
 
     public void StartMultiplier(float multiplier, float multiplierDuration)
     {
@@ -66,8 +68,10 @@ public class ScoreManager : MonoBehaviour
     {
         while (isAlive)
         {
+            //Debug.Log("[ScoreManager] coroutine STARTED");
             yield return new WaitForSeconds(1f);
             playerScore += (int)(1 * scoreMultiplier);
+            //Debug.Log("[ScoreManager] tick → " + playerScore);
             UpdateScoreUI();
         }
 
@@ -81,31 +85,19 @@ public class ScoreManager : MonoBehaviour
     }
 
     
-    private void UpdateScoreUI()
+    public void UpdateScoreUI()
     {
 
         if (scoreText != null)
         {
             scoreText.text = "Score: " + playerScore.ToString();
         }
-       
-       
+        
+        if (endScoreText != null)
+        {
+            endScoreText.text = "Score:" + playerScore.ToString();
+        }
     }
-    
-       
+
    
-   
-   
-   
-   
-       //[SerializeField] private TextMeshProUGUI scoreText;
-       //private int _score = 0;
-       //// Start is called once before the first execution of Update after the MonoBehaviour is created
-       //void Start()
-       //{
-       //}
-       //// Update is called once per frame
-       //void Update()
-       //{
-       //}
 }

@@ -10,22 +10,40 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
     }
 
     void Start()
     {
+        
         gameOverPanel.SetActive(false);
+        
     }
 
-    void Update()
+    public void GameOver()
     {
-
+        ScoreManager.Instance.StopScoring();
+        ScoreManager.Instance.UpdateScoreUI();
+        gameOverPanel.SetActive(true);
+        
     }
-
+    
     public void ResetLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+   
 
 }

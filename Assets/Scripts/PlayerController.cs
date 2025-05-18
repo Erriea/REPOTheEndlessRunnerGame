@@ -219,10 +219,12 @@ public class PlayerController : MonoBehaviour
     void Dead()
     {
         isAlive = false;
-        StopAllCoroutines();
-        // game over panel pops up and user can try again
-        GameManager.Instance.gameOverPanel.SetActive(true);
         
+        
+        ScoreManager.Instance.StopScoring();
+        GameManager.Instance.GameOver();
+        
+
     }
     
     private void OnTriggerEnter(Collider other)
@@ -234,17 +236,6 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-   //public void ActivateDestroyMode() {
-   //    destroysObstacles = true;  // Enable object destruction
-   //    StartCoroutine(DisableDestroyMode());  // Start timer to disable it
-   //}
-
-   //private IEnumerator DisableDestroyMode() {
-   //    yield return new WaitForSeconds(5f);  // Wait 5 seconds
-   //    destroysObstacles = false;  // Disable object destruction
-   //}
-    
-   
    //shouldnt it be in pickup?
    //ill look at it if we have time
    
@@ -282,6 +273,17 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
+    
+    //public void ActivateDestroyMode() {
+    //    destroysObstacles = true;  // Enable object destruction
+    //    StartCoroutine(DisableDestroyMode());  // Start timer to disable it
+    //}
+
+    //private IEnumerator DisableDestroyMode() {
+    //    yield return new WaitForSeconds(5f);  // Wait 5 seconds
+    //    destroysObstacles = false;  // Disable object destruction
+    //}
     
     
 }
