@@ -26,21 +26,23 @@ public class GroundtileController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         Debug.Log("Tile Spawn");
-        
-        if(_groundSpawner.tileNum < 5)
+
+        _groundSpawner.tileNum++; // Increase count for tracking
+
+        if (_groundSpawner.tileNum < 5) // First 5 tiles should be GroundTiles
         {
-            Debug.Log("if stament triggered");
+            Debug.Log("Spawning GroundTile");
             _groundSpawner.SpawnTile();
         }
-        else
+        else // Switch to BossTiles
         {
-            _groundSpawner.tileNum = 0;
-            Debug.Log("spawn boss tiggered");
+            Debug.Log("Switching to BossTiles");
+            _groundSpawner.tileNum = 0; // Reset counter before spawning boss tiles
             _groundSpawner.SpawnBossTile();
-            
         }
 
-        Destroy(gameObject, 5f); //destorys tile after 5 seconmds
+        Destroy(gameObject, 5f);
+
     }
 
     // Update is called once per frame

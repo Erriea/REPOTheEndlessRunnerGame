@@ -23,22 +23,24 @@ public class BossTileController : MonoBehaviour
     //looks for what to spawn next tile
     private void OnTriggerExit(Collider other)
     {
-        
-        
-        if(_groundSpawner.tileNum < 4)
+        Debug.Log("Boss Tile Spawn");
+
+        _groundSpawner.tileNum++; // Track spawned boss tiles
+
+        if (_groundSpawner.tileNum < 3) // First 3 tiles should be BossTiles
         {
+            Debug.Log("Spawning BossTile");
             _groundSpawner.SpawnBossTile();
         }
-        else
+        else // Switch back to GroundTiles
         {
-            _groundSpawner.tileNum = 0;
-            Debug.Log("back to ground spawn");
+            Debug.Log("Switching to GroundTiles");
+            _groundSpawner.tileNum = 0; // Reset counter before switching back
             _groundSpawner.SpawnTile();
-            
         }
 
-        Destroy(gameObject, 5f); //destorys tile after 2 seconmds
-        Debug.Log("enemyTile gone");
+        Destroy(gameObject, 5f);
+
     }
     
     // Update is called once per frame

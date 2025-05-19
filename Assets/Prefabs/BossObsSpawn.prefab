@@ -79,7 +79,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4.022602, y: 0.0000038146973, z: -9.357818}
-  m_LocalScale: {x: 0.58, y: 0.62, z: 0.43}
+  m_LocalScale: {x: 0.5394, y: 0.62, z: 0.43}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5798867175993984680}
@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 7482288142800931085}
   - component: {fileID: 4625929253665684935}
   - component: {fileID: 3650517899427953130}
+  - component: {fileID: 8216937701749492261}
   m_Layer: 0
   m_Name: BossObsticle
   m_TagString: Untagged
@@ -196,3 +197,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.014778084, y: 0.014024782, z: 0.0119982315}
   m_Center: {x: -0.00039159978, y: -0.00044249115, z: 0.0059991116}
+--- !u!114 &8216937701749492261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6571427324069878802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9bdc961a79074c4cb14c1d81049943d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
