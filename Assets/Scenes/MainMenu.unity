@@ -694,7 +694,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "How To Play\n\nW,A,S,D or the arrow keys to move\nSpace to jump \nAvoid
-    Obstacles\nThere are 3 pick ups:\n- Super Jump\n- Double Points\n-Invinciblity"
+    Obstacles\nThere are 3 pick ups:\n- Super Jump (Red)\n- Double Points (Blue)\n-
+    Invinciblity (Purple)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

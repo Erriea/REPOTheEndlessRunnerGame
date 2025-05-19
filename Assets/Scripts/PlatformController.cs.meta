@@ -1,2 +1,13 @@
 fileFormatVersion: 2
 guid: 4689f7ed46609624cbe01f6fb7089b29
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dpPickupPrefab: {fileID: 3290500347801612181, guid: 1b599c147ffc3024cbeb486e4b39ceab, type: 3}
+  - pickupSpawnPoint: {fileID: 2945033857447634830, guid: f53443cc20229be44b2978d502c193fd, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

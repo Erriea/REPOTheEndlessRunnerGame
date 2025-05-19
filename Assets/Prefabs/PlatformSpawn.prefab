@@ -208,7 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4689f7ed46609624cbe01f6fb7089b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupPrefab: {fileID: 3290500347801612181, guid: 1b599c147ffc3024cbeb486e4b39ceab, type: 3}
+  pickupPrefabs:
+  - {fileID: 3290500347801612181, guid: 78e27c8a1ca2caa40bfad030e9a4ffe6, type: 3}
+  - {fileID: 3646802887580233719, guid: 99cce8057e4f50a458ffdee98adfb3ba, type: 3}
+  - {fileID: 383895934485443816, guid: ec20d1c83b46518478ca547e5ef589f4, type: 3}
   pickupSpawnPoint: {fileID: 7640600234529330382}
 --- !u!1 &9186277012691140917
 GameObject:
