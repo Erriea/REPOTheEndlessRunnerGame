@@ -1682,6 +1682,7 @@ MonoBehaviour:
   startTilePrefab: {fileID: 5259351462983995804, guid: 25a9e6cc3aad3c545b74020ff782595d, type: 3}
   groundTilePrefab: {fileID: 6043219285250494041, guid: e9c7d150bed1b3845ac3527824a09830, type: 3}
   bossTilePrefab: {fileID: 415087504465079246, guid: 780b43a19ed5b9c4bbaba7e2a9429d8d, type: 3}
+  tileNum: 0
 --- !u!1 &2066090557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1966,7 +1967,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &5777735975298750046
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2139,7 +2140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &7586662750132400147
 MeshFilter:
   m_ObjectHideFlags: 0
