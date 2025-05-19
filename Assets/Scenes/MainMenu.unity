@@ -394,6 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startButton: {fileID: 207362382}
+  highScoreText: {fileID: 1700295593}
 --- !u!114 &481824461
 MonoBehaviour:
   m_ObjectHideFlags: 0
