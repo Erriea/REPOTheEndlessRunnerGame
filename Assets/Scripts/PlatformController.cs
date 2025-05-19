@@ -5,14 +5,14 @@ using Random = System.Random;
 public class PlatformController : MonoBehaviour
 {
     private GroundSpawner _groundSpawner;
-    
-    public GameObject pickupPrefab;
+
+    public GameObject[] pickupPrefabs;
     public Transform pickupSpawnPoint;
-    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
+        _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
 
     }
 
@@ -24,18 +24,24 @@ public class PlatformController : MonoBehaviour
 
     public void SpawnPickup()
     {
-        int chanceOfSpawn = UnityEngine.Random.Range(0, 5); // Random number between 0 and 4
-        if (chanceOfSpawn != 0)  // 1 out of 10 chance
-        {
-            Instantiate(pickupPrefab, pickupSpawnPoint.transform.position, Quaternion.identity); //revoves transform to avoid distortion
-        }
-        
-        
-        
-        
+        // 1-in-5 chance to spawn something (0-based RNG → 0,1,2,3,4)
+        if (UnityEngine.Random.Range(0, 5) != 0) return;
+
+        // choose a prefab index 0..pickupPrefabs.Length-1
+        int i = UnityEngine.Random.Range(0, pickupPrefabs.Length);
+
+        Instantiate(
+            pickupPrefabs[i],
+            pickupSpawnPoint.position,
+            Quaternion.identity /* no rotation */
+        );
+
+
+
+
         //Instantiate(pickupPrefab, pickupSpawnPoint.transform.position, Quaternion.identity, transform);
-        
+
     }
-    
+
 
 }

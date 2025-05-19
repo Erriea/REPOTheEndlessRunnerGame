@@ -7,6 +7,12 @@ using UnityEngine;
 //to do - make player register platform ground to jump
 public class PlayerController : MonoBehaviour
 {
+    public bool isInvincible = false; // added to player controller
+    private Coroutine invincibiltyCoroutine; //added to player controller
+
+    private float baseJumpForce;//added to player controller
+    private Coroutine doubleJumpCoroutine;//added to player controller
+
     public bool isAlive = true; 
     public float runSpeed; 
     public float horizontalSpeed; 
@@ -21,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     //serialized coz u can make it public but cannot change it from other scripts
     //can also then see variables in an inspector even if private
-    [SerializeField] private float jumpForce = 500;
+    [SerializeField] private float jumpForce = 400f;
     [SerializeField] private LayerMask groundMask; //used to see whats ground and when to jump
     [SerializeField] private LayerMask platformMask; //find surface of platform
     [SerializeField] private LayerMask obstacleMask;
@@ -30,6 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         _playerCollider = GetComponent<Collider>(); //instantiates the player collider
+        isInvincible = false;
     }
 
     private void FixedUpdate()
@@ -45,6 +52,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        baseJumpForce = jumpForce;
         // checks if player collides with obstacle (g)
         
         Collider playerCollider = GetComponent<Collider>();
@@ -99,48 +107,124 @@ public class PlayerController : MonoBehaviour
     // added for when the player dies by collision
     private void OnCollisionEnter(Collision collision)
     {
-        if (!_pickIsActive && collision.gameObject.CompareTag("Obstacle")) 
+        if (collision.gameObject.CompareTag("Obstacle"))
         {
-            // Ignore collisions while the pickup is active
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        
-        if (collision.gameObject.name == "RockObsticle" && _pickIsActive == false)
+
+        // Rock obstacle
+        if (collision.gameObject.name == "RockObsticle")
         {
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        else if (GameObject.FindGameObjectsWithTag("Obstacle").Length == 0)
-        {
-            Destroy(collision.gameObject);
-        }
-        
+
+        // Icicle obstacle
         if (collision.gameObject.name == "IcicleObsticle")
         {
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        else if (collision.gameObject.name == "IcicleObsticle" && _pickIsActive == true)
-        {
-            Destroy(collision.gameObject);
-        }
-        
+
+        // Platform Kill Zone
         if (collision.gameObject.name == "PlatformKillZone")
         {
-            Dead();
+            if (isInvincible)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Dead();
+            }
+            return;
         }
-        else if (collision.gameObject.name == "PlatformKillZone" && _pickIsActive == true)
+        
+
+        // Clean up any remaining obstacle if all are gone
+        if (GameObject.FindGameObjectsWithTag("Obstacle").Length == 0)
         {
             Destroy(collision.gameObject);
         }
         
     }
 
+    
+    // Added for part 2
+    public IEnumerator InvincibiltityCoroutine(float invincDuration)
+    {
+        isInvincible = true;
+        Debug.Log("Invincible");
+        yield return new WaitForSeconds(invincDuration);
+        isInvincible = false;
+        invincibiltyCoroutine = null;
+        Debug.Log("Invincible Ended");
+    }
+
+    public void StartInvincibility(float invincDuration)
+    {
+        if (invincibiltyCoroutine != null)
+        {
+            StopCoroutine(invincibiltyCoroutine);
+            Debug.Log("Stopped previous coroutine");
+        }
+
+        invincibiltyCoroutine = StartCoroutine(InvincibiltityCoroutine(invincDuration));
+    }
+    
+    
+    // added for part 2
+    
+    public IEnumerator DoubleJumpCoroutine(float doubleJumpForce, float jumpDuration)
+    {
+        jumpForce = doubleJumpForce;
+        yield return new WaitForSeconds(jumpDuration);
+        jumpForce = baseJumpForce;
+        doubleJumpCoroutine = null;
+    }
+
+    public void StartDoubleJump(float doubleJumpForce, float jumpDuration)
+    {
+        if (doubleJumpCoroutine != null)
+        {
+            StopCoroutine(doubleJumpCoroutine);
+        }
+
+        doubleJumpCoroutine = StartCoroutine(DoubleJumpCoroutine(doubleJumpForce, jumpDuration));
+    }
+        
+    //
     void Dead()
     {
         isAlive = false;
-        StopAllCoroutines();
-        // game over panel pops up and user can try again
-        GameManager.Instance.gameOverPanel.SetActive(true);
         
+        
+        ScoreManager.Instance.StopScoring();
+        GameManager.Instance.GameOver();
+        
+
     }
     
     private void OnTriggerEnter(Collider other)
@@ -152,17 +236,6 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-   //public void ActivateDestroyMode() {
-   //    destroysObstacles = true;  // Enable object destruction
-   //    StartCoroutine(DisableDestroyMode());  // Start timer to disable it
-   //}
-
-   //private IEnumerator DisableDestroyMode() {
-   //    yield return new WaitForSeconds(5f);  // Wait 5 seconds
-   //    destroysObstacles = false;  // Disable object destruction
-   //}
-    
-   
    //shouldnt it be in pickup?
    //ill look at it if we have time
    
@@ -202,4 +275,16 @@ public class PlayerController : MonoBehaviour
     }
     
     
+    //public void ActivateDestroyMode() {
+    //    destroysObstacles = true;  // Enable object destruction
+    //    StartCoroutine(DisableDestroyMode());  // Start timer to disable it
+    //}
+
+    //private IEnumerator DisableDestroyMode() {
+    //    yield return new WaitForSeconds(5f);  // Wait 5 seconds
+    //    destroysObstacles = false;  // Disable object destruction
+    //}
+    
+    
 }
+
