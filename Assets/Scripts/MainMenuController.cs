@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -5,7 +6,19 @@ using UnityEngine.UI;
 public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private Button startButton;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private TextMeshProUGUI highScoreText;
+
+    void Awake()
+    {
+        // If you didn't drag it in, find by tag:
+        if (highScoreText == null)
+            highScoreText = GameObject.FindWithTag("HighScoreText")
+                ?.GetComponent<TextMeshProUGUI>();
+
+        int best = PlayerPrefs.GetInt("HighScore", 0);
+        highScoreText.text = "High Score: " + best.ToString();
+    }
+    
     void Start()
     {
         startButton.onClick.AddListener(OnStartButtonClicked);
@@ -15,6 +28,5 @@ public class MainMenuController : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene");
     }
-
 
 }
