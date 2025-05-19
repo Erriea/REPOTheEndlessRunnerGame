@@ -24,10 +24,10 @@ public class PlatformController : MonoBehaviour
 
     public void SpawnPickup()
     {
-        // 1-in-5 chance to spawn *something* (0-based RNG → 0,1,2,3,4)
-        if (UnityEngine.Random.Range(0, 5) != 0) return;
+        
+        if (UnityEngine.Random.Range(0, 2) != 0) return;
 
-        // choose a prefab index 0..pickupPrefabs.Length-1
+       
         int i = UnityEngine.Random.Range(0, pickupPrefabs.Length);
 
         Instantiate(
