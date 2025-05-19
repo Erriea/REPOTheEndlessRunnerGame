@@ -7,7 +7,7 @@ public class BossTileController : MonoBehaviour
     private int _randomSpawnPoint;
 
     //gameobject is for the asst
-    public GameObject[] bossObsPrefabs;
+    public GameObject bossObsPrefab;
     public GameObject bossPrefab;
     //transform is for position of SP
     public Transform[] bossObsSpawnPoints;
@@ -16,17 +16,28 @@ public class BossTileController : MonoBehaviour
     void Awake()
     {
         _groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
-        //SpawnBoss();
+        SpawnBoss();
         SpawnBossObstacle();
     }
 
     //looks for what to spawn next tile
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("just wanna see when this is triggered");
-        _groundSpawner.SpawnEnemyTile();
         
-        Destroy(gameObject, 2f); //destorys tile after 2 seconmds
+        
+        if(_groundSpawner.tileNum < 4)
+        {
+            _groundSpawner.SpawnBossTile();
+        }
+        else
+        {
+            _groundSpawner.tileNum = 0;
+            Debug.Log("back to ground spawn");
+            _groundSpawner.SpawnTile();
+            
+        }
+
+        Destroy(gameObject, 5f); //destorys tile after 2 seconmds
         Debug.Log("enemyTile gone");
     }
     
@@ -38,22 +49,22 @@ public class BossTileController : MonoBehaviour
     
     private void SpawnBossObstacle() 
     {
-        _randomSpawnPoint = UnityEngine.Random.Range(0, bossObsSpawnPoints.Length); //chooses one of available spawn points
-        int spawnEnemyObsPrefab = UnityEngine.Random.Range(0, bossObsPrefabs.Length); //chooses a prefab to spawn
-        
+        foreach (Transform spawnPoint in bossObsSpawnPoints) // Loop through all spawn points
+        {
+            Instantiate(bossObsPrefab, spawnPoint.position, Quaternion.identity, transform);
+        }
+
         //spawn in the random obstacle prefab in the random spawn point
-        Instantiate(bossObsPrefabs[spawnEnemyObsPrefab], bossObsPrefabs[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+        //Instantiate(bossObsPrefab, bossObsSpawnPoints[].transform.position, Quaternion.identity, transform);
     }
 
     //
     private void SpawnBoss() // spawn enemy
     {
-        
-        _randomSpawnPoint = UnityEngine.Random.Range(0,bossSpawnPoints.Length); //chooses one of available spawn points
-        
-        //spawn in the random obstacle prefab in the random spawn point
+        _randomSpawnPoint = UnityEngine.Random.Range(0, bossSpawnPoints.Length); //chooses one of available spawn points
         Instantiate(bossPrefab, bossSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
 
     }
+    
 
 }

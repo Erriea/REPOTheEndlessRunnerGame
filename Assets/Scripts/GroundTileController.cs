@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 public class GroundtileController : MonoBehaviour
@@ -24,7 +25,20 @@ public class GroundtileController : MonoBehaviour
     //looks for what to spawn next tile
     private void OnTriggerExit(Collider other)
     {
-        _groundSpawner.SpawnTile();
+        Debug.Log("Tile Spawn");
+        
+        if(_groundSpawner.tileNum < 5)
+        {
+            Debug.Log("if stament triggered");
+            _groundSpawner.SpawnTile();
+        }
+        else
+        {
+            _groundSpawner.tileNum = 0;
+            Debug.Log("spawn boss tiggered");
+            _groundSpawner.SpawnBossTile();
+            
+        }
 
         Destroy(gameObject, 5f); //destorys tile after 5 seconmds
     }
@@ -38,11 +52,20 @@ public class GroundtileController : MonoBehaviour
     //spawns one of 2 obstacles on a random spawn point set on the tile
     public void SpawnObstacle() 
     {
+        /*
         _randomSpawnPoint = UnityEngine.Random.Range(0, obstacleSpawnPoints.Length); //chooses one of available spawn points
         int spawnObsPrefab = UnityEngine.Random.Range(0, obstaclePrefabs.Length); //chooses a prefab to spawn
 
         //spawn in the random obstacle prefab in the random spawn point
         Instantiate(obstaclePrefabs[spawnObsPrefab], obstacleSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+        */
+        
+        foreach (Transform spawnPoint in obstacleSpawnPoints) // Loop through all spawn points
+        {
+            int spawnObsPrefab = UnityEngine.Random.Range(0, obstaclePrefabs.Length); // Choose a random obstacle prefab
+            Instantiate(obstaclePrefabs[spawnObsPrefab], spawnPoint.position, Quaternion.identity, transform);
+        }
+
     }
 
     //
@@ -56,8 +79,15 @@ public class GroundtileController : MonoBehaviour
         }
         */
         
+        foreach (Transform spawnPoint in obstacleSpawnPoints) // Loop through all spawn points
+        {
+            int spawnObsPrefab = UnityEngine.Random.Range(0, obstaclePrefabs.Length); // Choose a random obstacle prefab
+            Instantiate(obstaclePrefabs[spawnObsPrefab], spawnPoint.position, Quaternion.identity, transform);
+        }
+
+        
         int chanceOfSpawn = UnityEngine.Random.Range(0, 10); 
-        _randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length);
+        //_randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length);
 
         if (chanceOfSpawn == 0)
         {
@@ -73,6 +103,7 @@ public class GroundtileController : MonoBehaviour
             }
         }
     }
+    
 
     // ADDITIONAL CODEEE
     //void OnObjectDestroy()

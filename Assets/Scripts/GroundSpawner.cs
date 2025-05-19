@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class GroundSpawner : MonoBehaviour
@@ -8,30 +9,30 @@ public class GroundSpawner : MonoBehaviour
     [SerializeField] GameObject bossTilePrefab;
 
     private Vector3 _nextSpawnPoint;
-    
-    // stuff for the timer of spaning the boss tile
-    //private float _gameTime = 0f;
-    //private bool _spawningBossTiles = false;
-    //private bool _spawningTiles = false;
-    //private int _bossTileCount = 0;
+    public int tileNum = 0; // Shared counter for all tiles
+
     
     void Start()
     {
+        
         //starting tiles
         
-        for (int i = 0; i < 15; i++) //10 is for how many tiles at start
+        for (int i = 0; i < 10; i++) //10 is for how many tiles at start
         {
-            if (i <= 6)
+            if (i <= 3)
             {
                 SpawnStartTile();
             }
             else
             {
                 SpawnTile();
+                
                 //_spawningTiles = true;
             }
             
         }
+        
+        
     }
 
 
@@ -47,33 +48,50 @@ public class GroundSpawner : MonoBehaviour
     //SPAWNS THE GAME TILES
     public void SpawnTile()
     {
-        //if (_spawningTiles)
-        //{
-        //    //spawns prefab
-        //    GameObject tempGround = Instantiate(groundTilePrefab, _nextSpawnPoint, Quaternion.identity);
-        //    //tells where to spawn next tile
-        //    _nextSpawnPoint = tempGround.transform.GetChild(1).position; 
-        //}
-        //else
-        //{
-        //    Debug.Log("not spawning tile");
-        //    
-        //}
-        
         //spawns prefab
         GameObject tempGround = Instantiate(groundTilePrefab, _nextSpawnPoint, Quaternion.identity);
         //tells where to spawn next tile
         _nextSpawnPoint = tempGround.transform.GetChild(1).position; 
+        
+        tileNum++; // Increase count
+        Debug.Log("GroundTile count: " + tileNum);
+
     }
 
     
-    public void SpawnEnemyTile()
+    public void SpawnBossTile()
     {
-        GameObject tempGround = Instantiate(groundTilePrefab, _nextSpawnPoint, Quaternion.identity);
+        GameObject tempGround = Instantiate(bossTilePrefab, _nextSpawnPoint, Quaternion.identity);
         //tells where to spawn next tile
         _nextSpawnPoint = tempGround.transform.GetChild(1).position; 
+        Debug.Log("boss has started");
+        
+        tileNum++; // Increase count
+        Debug.Log("BossTile count: " + tileNum);
+
     }
+    
 }
+
+
+// stuff for the timer of spaning the boss tile
+//private float _gameTime = 0f;
+//private bool _spawningBossTiles = false;
+//private bool _spawningTiles = false;
+//private int _bossTileCount = 0;
+
+//if (_spawningTiles)
+//{
+//    //spawns prefab
+//    GameObject tempGround = Instantiate(groundTilePrefab, _nextSpawnPoint, Quaternion.identity);
+//    //tells where to spawn next tile
+//    _nextSpawnPoint = tempGround.transform.GetChild(1).position; 
+//}
+//else
+//{
+//    Debug.Log("not spawning tile");
+//    
+//}
 
 //void Update()
 //{
