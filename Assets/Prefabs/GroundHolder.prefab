@@ -447,16 +447,7 @@ MonoBehaviour:
   - {fileID: 7252700146926295626}
   - {fileID: 6114899860271665342}
   - {fileID: 6631539635731790487}
-  - {fileID: 2738063434622083438}
   - {fileID: 6496673425999806730}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   platformSpawnPoints:
   - {fileID: 6287019122115729416}
   - {fileID: 703402543002530935}

@@ -240,5 +240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4689f7ed46609624cbe01f6fb7089b29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupPrefab: {fileID: 3290500347801612181, guid: 1b599c147ffc3024cbeb486e4b39ceab, type: 3}
+  pickupPrefabs:
+  - {fileID: 3290500347801612181, guid: 1b599c147ffc3024cbeb486e4b39ceab, type: 3}
+  - {fileID: 718810820539295088, guid: d7c26f3fcc006c240a1930387cefc0f3, type: 3}
+  - {fileID: 2649188382782783358, guid: 4914c8658c7327948983757015322a01, type: 3}
   pickupSpawnPoint: {fileID: 2634018263285066614}

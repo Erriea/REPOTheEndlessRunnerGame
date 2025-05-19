@@ -77,31 +77,35 @@ public class GroundtileController : MonoBehaviour
         {
             Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
         }
+
+
+        foreach (Transform spawnPoint in platformSpawnPoints) // Loop through platform spawn points
+        {
+            Instantiate(platformPrefab, spawnPoint.position, Quaternion.identity, transform);
+        }
         */
         
-        foreach (Transform spawnPoint in obstacleSpawnPoints) // Loop through all spawn points
+        _randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length); //chooses one of available spawn points
+
+        //spawn in the random obstacle prefab in the random spawn point
+        Instantiate(platformPrefab, obstacleSpawnPoints[_randomSpawnPoint].transform.position, Quaternion.identity, transform);
+
+        // Optional chance-based spawn (keeps original idea)
+        int chanceOfSpawn = UnityEngine.Random.Range(0, 10);
+
+        if (chanceOfSpawn == 0) // 1 in 10 chance to spawn a pickup
         {
-            int spawnObsPrefab = UnityEngine.Random.Range(0, obstaclePrefabs.Length); // Choose a random obstacle prefab
-            Instantiate(obstaclePrefabs[spawnObsPrefab], spawnPoint.position, Quaternion.identity, transform);
-        }
+            GameObject platform = Instantiate(platformPrefab, platformSpawnPoints[UnityEngine.Random.Range(0, platformSpawnPoints.Length)].position, Quaternion.identity, transform);
 
-        
-        int chanceOfSpawn = UnityEngine.Random.Range(0, 10); 
-        //_randomSpawnPoint = UnityEngine.Random.Range(0, platformSpawnPoints.Length);
-
-        if (chanceOfSpawn == 0)
-        {
-            GameObject platform = Instantiate(platformPrefab, platformSpawnPoints[_randomSpawnPoint].transform.position,
-                Quaternion.identity, transform);
-
-            // Get the PlatformController component from the spawned platform
+            // Ensure it has the PlatformController component
             PlatformController platformControllerInstance = platform.GetComponent<PlatformController>();
 
             if (platformControllerInstance != null)
             {
-                platformControllerInstance.SpawnPickup(); // Call the function that spawns pickups
+                platformControllerInstance.SpawnPickup(); // Call the function to spawn pickups
             }
         }
+
     }
     
 
