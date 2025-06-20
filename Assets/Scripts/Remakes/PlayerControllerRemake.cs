@@ -7,23 +7,40 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
     public class PlayerControllerRemake : MonoBehaviour
     {
         //PLAYER COMPONENTS FOR JUMP
-        [SerializeField] public Rigidbody rb;
-        private bool _isGrounded = false;
+        [SerializeField]  Rigidbody rb;
+        [SerializeField]  AudioSource jumpFX;//Audio
+        [SerializeField] int maxJumpCount = 1;
+        public static bool _isGrounded = false;
+        private int _jumpCount = 0;
+        public static bool AllowDoubleJump = false;
+        
         //PLAYER MOVEMENT STATS
         [SerializeField] float playerSpeed = 2f;
         [SerializeField] float horizontalSpeed = 3f;
-        [SerializeField] float jumpForce = 8f;
+        [SerializeField] public static float jumpForce = 8f;
+        
         //PLAYER MOVEMENT LIMITATIONS
         public float rightLimit = 7.5f;
         public float leftLimit = -7.5f;
+        
+        //PLAYER STATUS
+        public static bool IsAlive = true;
+        public static bool IsInvincible = false;
 
         void Awake()
         {
             //GET PLAYER RIGIDBODY
             rb = GetComponent<Rigidbody>();
         }
+        
         void Update()
         {
+            //STUFF FOR DOUBLE JUMP
+            _isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
+
+            if (_isGrounded)
+                _jumpCount = 0;
+            
             //CONTINUOUS FORWARD MOTION
             /*
              moves it with a Vector 3 coz 3D we know this
@@ -44,6 +61,7 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
                 MoveRight();
             }
 
+            //JUMP
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 //CHECK IF PLAYER ON GROUND
@@ -52,6 +70,7 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
             }
         }
 
+        //METHODS-------------------------------------------------------------------------------
         //MOVE PLAYER LEFT
         private void MoveLeft()
         {
@@ -75,10 +94,30 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
         //MAKES PLAYER JUMP
         private void Jump()
         {
-            //PREVENT INFINITE JUMPING
             if (_isGrounded)
-                //rb.AddForce(Vector3.up * jumpForce);
+            {
+                _jumpCount = 0; // Reset count on ground
+            }
+
+            bool canDoubleJump = AllowDoubleJump && _jumpCount < maxJumpCount;
+
+            if (_isGrounded || canDoubleJump)
+            {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                jumpFX.Play();
+
+                _jumpCount++;
+            }
+
+            
+            /*
+             * //PREVENT INFINITE JUMPING
+                if (_isGrounded)
+                    //rb.AddForce(Vector3.up * jumpForce);
+                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                //PLAY AUDIO ONCE
+                jumpFX.Play();
+             */
         }
     }
 }

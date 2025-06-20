@@ -32,7 +32,9 @@ namespace Remakes
             
             //GENERATE TILE IN GAME 50 Z SPACES FROM PREVIOUS TILE
             //Create instance of <objectName>.<x,y,z>,Quaternion.identity
-            Instantiate(segmentPrefab[segmentNum], new Vector3(0, 0, zPos), Quaternion.identity);
+            //Instantiate(segmentPrefab[segmentNum], new Vector3(0, 0, zPos), Quaternion.identity);
+            GameObject newSegment = Instantiate(segmentPrefab[segmentNum], new Vector3(0, 0, zPos), Quaternion.identity);
+            //Destroy(newSegment, 40f);// Destroys it after 40 seconds automatically
             
             //increase zPos
             zPos += 50;
@@ -40,6 +42,9 @@ namespace Remakes
             //wait 3s before next segment spawn
             yield return new WaitForSeconds(3f);
             createSegment = false;
+            
+            yield return new WaitForSeconds(10f);
+            Destroy(newSegment);
         }
     }
 }
