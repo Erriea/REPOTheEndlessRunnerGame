@@ -107,7 +107,7 @@ namespace Remakes
             else
             {
                 Debug.Log("Data received from database");
-                Debug.Log(www.downloadHandler.text);
+                //Debug.Log(www.downloadHandler.text);
                 callback?.Invoke(www.downloadHandler.text);
             }
         }
