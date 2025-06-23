@@ -1690,6 +1690,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 490150323}
+  - component: {fileID: 490150324}
   m_Layer: 0
   m_Name: LeaderBoardManager
   m_TagString: Untagged
@@ -1712,6 +1713,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &490150324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490150322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9416be468c7a0fb4b9bf2064094a1894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameTextMesh: {fileID: 1226841167}
+  scoreTextMesh: {fileID: 322875772}
 --- !u!1 &492835394
 GameObject:
   m_ObjectHideFlags: 0
@@ -3100,7 +3115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a94297861f197499adc3b086ebe113, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelInfo: {fileID: 0}
 --- !u!114 &1024956293
 MonoBehaviour:
   m_ObjectHideFlags: 0

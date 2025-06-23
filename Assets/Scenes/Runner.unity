@@ -1807,6 +1807,7 @@ GameObject:
   - component: {fileID: 679529948}
   - component: {fileID: 679529950}
   - component: {fileID: 679529949}
+  - component: {fileID: 679529951}
   m_Layer: 5
   m_Name: EnterInfoOverlay
   m_TagString: Untagged
@@ -1872,6 +1873,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679529947}
   m_CullTransparentMesh: 1
+--- !u!114 &679529951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679529947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 863e930ff1c80ed4ea0c898c6ec38cd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNameInputField: {fileID: 886412447}
+  enterInfoButton: {fileID: 671159071}
 --- !u!1 &812736936
 GameObject:
   m_ObjectHideFlags: 0

@@ -3720,9 +3720,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fff62bc8527341448a1b9c22c95a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  databaseSettings: {fileID: 11400000, guid: 9edcf24c76070f345947bb5580a49403, type: 2}
   playerPrefab: {fileID: 2988365330397822117, guid: 4808fb6ad7dba834bb205a71a0fe152d, type: 3}
   thePlayer: {fileID: 0}
   mainCamera: {fileID: 0}
+  camLerpSpeed: 2.5
   levelInfo: {fileID: 0}
   treePrefab: {fileID: 4230524899681851444, guid: 4e3c5415e4589b54c80c949718d622ab, type: 3}
   rockPrefab: {fileID: 6042225280203884410, guid: 80d3710f25054f146bf831c13f76932a, type: 3}
@@ -3733,6 +3735,7 @@ MonoBehaviour:
   icePrefab: {fileID: 2374314778885542891, guid: 69db6dddc1e63df46afd38ddf52e6727, type: 3}
   boss1Prefab: {fileID: 94835227368921418, guid: a21be8dfe99309a46a9e3002e28f2bba, type: 3}
   boss2Prefab: {fileID: 1981533984678811073, guid: 73bcdb24bd29d62439a1d061d0428c1b, type: 3}
+  isBoss2Active: 0
   offScreenHider: {fileID: 0}
   isPickUpActive: 0
   isScorePUActive: 0
