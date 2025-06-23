@@ -3720,7 +3720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fff62bc8527341448a1b9c22c95a1c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 342420645391033597, guid: edd13cf2fe4eafc4fa61f160bdcfda68, type: 3}
+  playerPrefab: {fileID: 2988365330397822117, guid: 4808fb6ad7dba834bb205a71a0fe152d, type: 3}
   thePlayer: {fileID: 0}
   mainCamera: {fileID: 0}
   levelInfo: {fileID: 0}
@@ -3732,7 +3732,6 @@ MonoBehaviour:
   invinciblePickupPrefab: {fileID: 224267012626250921, guid: 244b605b7d20c854f96f30eab076ba2c, type: 3}
   icePrefab: {fileID: 2374314778885542891, guid: 69db6dddc1e63df46afd38ddf52e6727, type: 3}
   boss1Prefab: {fileID: 94835227368921418, guid: a21be8dfe99309a46a9e3002e28f2bba, type: 3}
-  boss2: {fileID: 0}
   offScreenHider: {fileID: 0}
   isPickUpActive: 0
   isScorePUActive: 0
