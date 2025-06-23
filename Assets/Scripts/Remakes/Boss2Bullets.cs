@@ -5,49 +5,57 @@ namespace Remakes
 {
     public class Boss2Bullets : MonoBehaviour
     {
-        [SerializeField] public GameObject bulletPrefab;
-        public Transform firePoint;             // where bullet spawns from
-        public float fireIntervalMin = 1.5f;
-        public float fireIntervalMax = 3f;
-        public float bulletSpeed = 0f;
-        public float bulletSpeedOffset = 6;
+        public GameObject bulletPrefab;
+        public Transform firePoint;
+        public float fireRate = 2f;
 
-        private bool _isFiring = false;
+        private Coroutine firingRoutine;
 
         void OnEnable()
         {
-            _isFiring = true;
-            StartCoroutine(FireLoop());
+            firingRoutine = StartCoroutine(FireLoop());
         }
 
         void OnDisable()
         {
-            _isFiring = false;
+            if (firingRoutine != null)
+                StopCoroutine(firingRoutine);
         }
 
         IEnumerator FireLoop()
         {
-            while (_isFiring)
+            while (true)
             {
-                yield return new WaitForSeconds(Random.Range(fireIntervalMin, fireIntervalMax));
                 Fire();
+                yield return new WaitForSeconds(fireRate);
             }
         }
-
+        
         void Fire()
         {
-            float playerSpeed = TheGameManager.Instance.thePlayer
-                .GetComponent<PlayerControllerRemake>().currentSpeed;
+            if (TheGameManager.Instance.isBoss2Active == true)
+            {
+                Debug.Log("Bullet fired!");
 
-            float bulletSpeed = playerSpeed + bulletSpeedOffset;
+                if (bulletPrefab == null || firePoint == null || TheGameManager.Instance.thePlayer == null)
+                    return;
 
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                float playerSpeed = TheGameManager.Instance.thePlayer
+                    .GetComponent<PlayerControllerRemake>().currentSpeed;
 
-            if (rb != null)
-                rb.linearVelocity = firePoint.forward * bulletSpeed;
+                float bulletSpeed = playerSpeed + 15f;
 
-            Destroy(bullet, 10f);
+                GameObject bullet = Instantiate(bulletPrefab, firePoint.position + firePoint.up * 1f, firePoint.rotation);
+                Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                if (rb != null)
+                    rb.velocity = firePoint.forward * bulletSpeed;
+
+                Destroy(bullet, 5f);
+            }
+            else
+            {
+                return;
+            }
         }
 
     }

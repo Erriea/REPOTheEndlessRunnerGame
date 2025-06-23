@@ -20,6 +20,12 @@ namespace Remakes
         
         //THE CAMERA
         public GameObject mainCamera;
+        private Vector3 _defaultCamPos;
+        private Quaternion _defaultCamRot;
+        private Vector3 targetCamPos;
+        private Quaternion targetCamRot;
+        public float camLerpSpeed = 2.5f;
+        private bool shouldLerpCam = false;
 
         // ADD LEVELINFO
         [SerializeField] public LevelInfo levelInfo;
@@ -41,6 +47,7 @@ namespace Remakes
         //BOSS2 STUFF
         [SerializeField] private GameObject boss2Prefab;
         private GameObject boss2Instance;
+        public bool isBoss2Active = false;
         
         //SPAWNED OBSTICLES
         public OffScreenHider offScreenHider;
@@ -106,6 +113,9 @@ namespace Remakes
                 offScreenHider = FindObjectOfType<OffScreenHider>();
                 ResetGame();
                 SpawnPlayer();
+                //set camera positions
+                _defaultCamPos = mainCamera.transform.localPosition;
+                _defaultCamRot = mainCamera.transform.localRotation;
                 SpawnBoss2();
                 boss2Instance.GetComponent<Boss2Move>().playerTransform = thePlayer.transform;
                 
@@ -122,6 +132,25 @@ namespace Remakes
                 isJumpPUActive = false;
                 isInvsPUActive = false;
             }
+        }
+
+        void Update()
+        {
+            if (mainCamera != null && shouldLerpCam)
+            {
+                mainCamera.transform.localPosition = Vector3.Lerp(
+                    mainCamera.transform.localPosition,
+                    targetCamPos,
+                    Time.deltaTime * camLerpSpeed
+                );
+
+                mainCamera.transform.localRotation = Quaternion.Lerp(
+                    mainCamera.transform.localRotation,
+                    targetCamRot,
+                    Time.deltaTime * camLerpSpeed
+                );
+            }
+
         }
         
         //SETTING UP PLAYER SPAWN
@@ -382,6 +411,14 @@ namespace Remakes
                 levelInfo.bossBack.SetActive(true);
                 levelInfo.levelDisplay.GetComponent<TMPro.TMP_Text>().text = "LEVEL 2";
                 levelInfo.bossDisplay.GetComponent<TMPro.TMP_Text>().text = "PARASITE ATTACKING";
+                isBoss2Active = true;
+                
+                //chnage camera
+                // Set boss camera view
+                shouldLerpCam = true;
+                mainCamera.transform.localPosition = new Vector3(0f, 16.91f, -12.38f);
+                mainCamera.transform.localRotation = Quaternion.Euler(53f, 0f, 0f);
+                shouldLerpCam = false;
                 
                 yield return new WaitForSeconds(10f);
                 
@@ -389,7 +426,17 @@ namespace Remakes
                 Debug.Log("Boss2 end");
                 levelInfo.levelBack.SetActive(false);
                 levelInfo.bossBack.SetActive(false);
+                isBoss2Active = false;
+                
+                //reset camera
+                shouldLerpCam = true;
+                mainCamera.transform.localPosition = _defaultCamPos;
+                mainCamera.transform.localRotation = _defaultCamRot;
+                targetCamPos = _defaultCamPos;
+                targetCamRot = _defaultCamRot;
+                shouldLerpCam = false;
 
+                
                 //INCREASE SCORE FOR PASSING BOSS ALIVE
                 if (isAlive == true)
                 {

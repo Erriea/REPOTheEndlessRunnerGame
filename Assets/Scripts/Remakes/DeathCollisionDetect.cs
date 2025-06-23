@@ -57,6 +57,17 @@ namespace Remakes
         //WHEN COLLISION IS TRIGGERED
         void OnTriggerEnter(Collider other)//collider refered to here is the players collider
         {
+            if (!other.CompareTag("Player")) return;
+
+            Debug.Log("Player hit the death zone");
+
+            if (TheGameManager.Instance.isInvsPUActive)
+            {
+                Debug.Log("Player hit death zone but is invincible — ignored.");
+                TheGameManager.Instance.StopInvincibilityEarly();
+                return;
+            }
+            
             Debug.Log("Player hit the death zone");
             //CHECK FOR INVINSIBILITY
             if (TheGameManager.Instance.isInvsPUActive)

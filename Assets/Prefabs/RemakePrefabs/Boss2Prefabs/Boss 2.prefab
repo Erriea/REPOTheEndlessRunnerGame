@@ -555,6 +555,7 @@ GameObject:
   - component: {fileID: 4128825080898000667}
   - component: {fileID: 8874735575288642885}
   - component: {fileID: 2111129531694514018}
+  - component: {fileID: -6398158227773727334}
   m_Layer: 0
   m_Name: Boss 2
   m_TagString: Untagged
@@ -613,8 +614,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f87835ab5e31848a4ed32bc2f8b805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
+  followDistance: 10
+  smoothSpeed: 5
   xLimit: 7.5
-  speed: 6
+  sideMoveSpeed: 2
+--- !u!114 &-6398158227773727334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981533984678811073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf40fb28436041499982091ca4d55c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 6324291906446610411, guid: d1d069d80b5cb104c952bcd1392b5f13, type: 3}
+  firePoint: {fileID: 4128825080898000667}
+  fireRate: 2
 --- !u!1 &2154118949028486001
 GameObject:
   m_ObjectHideFlags: 0
