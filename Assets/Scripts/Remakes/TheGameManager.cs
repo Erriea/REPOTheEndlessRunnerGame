@@ -12,6 +12,13 @@ namespace Remakes
     {
         public static TheGameManager Instance;
         
+        [SerializeField] private DatabaseSettings databaseSettings;
+
+        public string DatabaseURL => databaseSettings.databaseURL;
+        public string ScoresEndpoint => databaseSettings.scoresEndpoint;
+
+        public string PostScoreEndpoint => databaseSettings.postScoreEndpoint;
+        
         //THE PLAYER
         //making at a spawned instance
         [SerializeField] GameObject playerPrefab;
