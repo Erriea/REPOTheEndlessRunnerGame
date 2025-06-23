@@ -4,8 +4,27 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Ground
+  - HighScoreText
+  - TreeSpawn
+  - RockSpawn
+  - LogSpawn
+  - JumpPickUpSpawn
+  - ScorePickUpSpawn
+  - InvsPickUpSpawn
+  - IceSpawn
+  - Boss1Spawn
   - Obstacle
   - Platform
+  - FadeOut
+  - GameOverText
+  - ScorePickup
+  - JumpPickup
+  - InvinciblePickup
+  - Boss1Prefab
+  - IcePrefab
+  - Boss1
+  - Ice
   layers:
   - Default
   - TransparentFX
