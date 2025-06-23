@@ -111,6 +111,7 @@ namespace Remakes
                 levelInfo.enterUsernameUI.SetActive(true);
                 AudioManager.Instance.gameplayBGM.Stop();
                 levelInfo.yourScore.GetComponent<TMPro.TMP_Text>().text = "SCORE: " + LevelInfo.TotalScore;
+                DatabaseManager.Instance.playerHighscore = LevelInfo.TotalScore;
             }
         }
 

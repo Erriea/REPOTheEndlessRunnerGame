@@ -60,6 +60,9 @@ namespace Remakes
         {
             scoreDisplay.GetComponent<TMPro.TMP_Text>().text = "SCORE: " + ScoreCount;
             TotalScore = ScoreCount;
+            
+            //update in datamanager
+            //DatabaseManager.Instance.playerHighscore = TotalScore;
         }
         
         //PICK UP UI -------------------------------------------------------------------
