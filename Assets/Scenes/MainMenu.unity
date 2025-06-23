@@ -3732,6 +3732,7 @@ MonoBehaviour:
   invinciblePickupPrefab: {fileID: 224267012626250921, guid: 244b605b7d20c854f96f30eab076ba2c, type: 3}
   icePrefab: {fileID: 2374314778885542891, guid: 69db6dddc1e63df46afd38ddf52e6727, type: 3}
   boss1Prefab: {fileID: 94835227368921418, guid: a21be8dfe99309a46a9e3002e28f2bba, type: 3}
+  boss2Prefab: {fileID: 1981533984678811073, guid: 73bcdb24bd29d62439a1d061d0428c1b, type: 3}
   offScreenHider: {fileID: 0}
   isPickUpActive: 0
   isScorePUActive: 0

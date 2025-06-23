@@ -39,8 +39,8 @@ namespace Remakes
         [SerializeField] public GameObject boss1Prefab;
         
         //BOSS2 STUFF
-        //[HideInInspector] public GameObject boss2;
-        //private GameObject bossTwo;
+        [SerializeField] private GameObject boss2Prefab;
+        private GameObject boss2Instance;
         
         //SPAWNED OBSTICLES
         public OffScreenHider offScreenHider;
@@ -106,6 +106,8 @@ namespace Remakes
                 offScreenHider = FindObjectOfType<OffScreenHider>();
                 ResetGame();
                 SpawnPlayer();
+                SpawnBoss2();
+                boss2Instance.GetComponent<Boss2Move>().playerTransform = thePlayer.transform;
                 
                 SegmentPooler.Instance.ResetSegmentPool();
                 FindObjectOfType<SegmentController>().ResetZPosition();
@@ -142,6 +144,20 @@ namespace Remakes
             mainCamera = thePlayer.GetComponentInChildren<Camera>().gameObject;
 
         }
+        
+        //SPAWN BOSS 2 10 UNIT BEHIND PLAUER
+        void SpawnBoss2()
+        {
+            if (thePlayer == null || boss2Prefab == null)
+            {
+                Debug.LogWarning("Cannot spawn Boss2 — missing references.");
+                return;
+            }
+
+            Vector3 spawnPos = thePlayer.transform.position + new Vector3(0, 0, -10f);
+            boss2Instance = Instantiate(boss2Prefab, spawnPos, Quaternion.identity);
+        }
+
 
         /*
         //REGISTER OBSTICLESPAWNER METHODS
@@ -355,7 +371,7 @@ namespace Remakes
                     LevelInfo.ScoreCount += 30;
                     levelInfo.UpdateScoreUI();
                 }
-                /*
+                
                  
                 //PEACE TIME
                 yield return new WaitForSeconds(10f);
@@ -367,9 +383,10 @@ namespace Remakes
                 levelInfo.levelDisplay.GetComponent<TMPro.TMP_Text>().text = "LEVEL 2";
                 levelInfo.bossDisplay.GetComponent<TMPro.TMP_Text>().text = "PARASITE ATTACKING";
                 
-                yield return new WaitForSeconds(30f);
+                yield return new WaitForSeconds(10f);
                 
                 //DEACTIVATE BOSS UI
+                Debug.Log("Boss2 end");
                 levelInfo.levelBack.SetActive(false);
                 levelInfo.bossBack.SetActive(false);
 
@@ -379,7 +396,7 @@ namespace Remakes
                     LevelInfo.ScoreCount += 30;
                     levelInfo.UpdateScoreUI();
                 }
-                */
+                
             }
         }
 
