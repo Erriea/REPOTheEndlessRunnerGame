@@ -1,25 +1,74 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
+
+//MANAGES ANYTHING RELATED TO PROJECT AS A WHOLE THAT CAN BE ACCESS ANYWHERE AND NOT DELETE BETWEEN SCENES
 namespace Remakes
 {
     public class TheGameManager : MonoBehaviour
     {
         public static TheGameManager Instance;
         
-        private Coroutine _invincibleRoutine;
+        //THE PLAYER
+        //making at a spawned instance
+        [SerializeField] GameObject playerPrefab;
+        [HideInInspector] public GameObject thePlayer;
+        public static bool isAlive = true;
+        
+        //THE CAMERA
+        public GameObject mainCamera;
 
         // ADD LEVELINFO
-        [SerializeField] LevelInfo levelInfo;
+        [SerializeField] public LevelInfo levelInfo;
 
-        //ADD BACKGROUND MUSIC FOR GAMEPLAY
-        [SerializeField] public AudioSource gameplayBGM;
+        //OBSTICLE PREFABS
+        [SerializeField] public GameObject treePrefab;
+        [SerializeField] public GameObject rockPrefab;
+        [SerializeField] public GameObject logPrefab;
 
-        //PICK UP INFO
-        [SerializeField] GameObject pickUpScore;
-        [SerializeField] GameObject pickUpJump;
-        [SerializeField] GameObject pickUpInv;
-        public bool isPickUpActive = false;
+        //PICK UP PREFABS
+        [SerializeField] public GameObject scorePickupPrefab;
+        [SerializeField] public GameObject jumpPickupPrefab;
+        [SerializeField] public GameObject invinciblePickupPrefab;
+
+        //BOSS 1 PREFABS
+        [SerializeField] public GameObject icePrefab;
+        [SerializeField] public GameObject boss1Prefab;
+        
+        //PICK UP ACTIVE CHECKS
+        [HideInInspector] public bool isPickUpActive = false;
+        [HideInInspector] public bool isScorePUActive = false;
+        [HideInInspector] public bool isJumpPUActive = false;
+        [HideInInspector] public bool isInvsPUActive = false;
+
+        //SCENE STUFF
+        [HideInInspector] public bool _isRunnerScene;
+        Coroutine _invincibleRoutine;
+
+        //PICK UPS AGAIN
+        public GameObject[] scorePickups;
+        public GameObject[] jumpPickups;
+        public GameObject[] invinciblePickups;
+        
+        //BOSS AND ICE
+        public static GameObject[] ices;
+        public static GameObject[] bosses1;
+        
+        
+        /*
+        //HIDE/SHOW PREFABS LISTS
+        [HideInInspector] public List<GameObject> boss1Instances    = new List<GameObject>();
+        [HideInInspector] public List<GameObject> iceInstances      = new List<GameObject>();
+        
+        
+        [HideInInspector] public List<GameObject> scorePickups      = new List<GameObject>();
+        [HideInInspector] public List<GameObject> jumpPickups       = new List<GameObject>();
+        [HideInInspector] public List<GameObject> invinciblePickups = new List<GameObject>();
+        */
+
 
 
         //SINGLETON FOR GAME MANAGER
@@ -36,129 +85,348 @@ namespace Remakes
             }
 
         }
-
-        void Start()
+        
+        //GET GAME TO RESTART AFTER LOADING SECENE
+        void OnEnable()
         {
-            //START GAME MUSIC
-            //Note: needs to be linked to played being alive or not
-            //also idk if it will loop so well find out i guess
-            //also need to find a way to make it stop halfway through or something
-            gameplayBGM.Play();
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
-        void Update()
+        void OnDisable()
         {
-            //UPDATE UI
-            //check player live
-            if (PlayerControllerRemake.IsAlive)
-            {
-                //continually update score
-                // the amount it is updated by should go up and down elsewhere
-                levelInfo.UpdateScoreUI();
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
 
-                //check if pickupUI need changing
-                if (isPickUpActive)
-                {
-                    levelInfo.UpdatePickUpUI();
-                }
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            _isRunnerScene = (scene.buildIndex == 1);
+            //isAlive = true;
+            
+            if (_isRunnerScene)// Your Runner scene
+            {
+                //set boss and ice
+                ices = GameObject.FindGameObjectsWithTag("Ice");
+                bosses1 = GameObject.FindGameObjectsWithTag("Boss1");
+                
+                //pick ups
+                scorePickups = GameObject.FindGameObjectsWithTag("ScorePickup");
+                jumpPickups = GameObject.FindGameObjectsWithTag("JumpPickup");
+                invinciblePickups = GameObject.FindGameObjectsWithTag("InvinciblePickup");
+                
+                
+                Debug.Log("Runner set true");
+                //enable script
+                enabled = true;
+                
+                levelInfo = FindObjectOfType<LevelInfo>();
+
+                ResetGame();
+                SpawnPlayer();
+            
+                //levelInfo = FindObjectOfType<LevelInfo>();
+                SegmentPooler.Instance.ResetSegmentPool();
+                FindObjectOfType<SegmentController>().ResetZPosition();
+                
+                //start music
+                AudioManager.Instance.gameplayBGM.Play();
+            
+                //start the boss looping timer
+                StartCoroutine(BossCycleLoop());
+                
+                //pickups not cative
+                isScorePUActive = false;
+                isJumpPUActive = false;
+                isInvsPUActive = false;
+            }
+        }
+        
+        //SETTING UP PLAYER SPAWN
+        void SpawnPlayer()
+        {
+            if (!_isRunnerScene) return;
+            
+            //delete previous player
+            if (thePlayer != null)
+            {
+                Destroy(thePlayer);
+                thePlayer = null;
             }
 
+            //set player in correct spot
+            thePlayer = Instantiate(playerPrefab, new Vector3(0, 1.3f, -22.38f), Quaternion.identity);
+            thePlayer.tag = "Player";
+            
+            //find camera childed to instance of player
+            mainCamera = thePlayer.GetComponentInChildren<Camera>().gameObject;
+
         }
 
+        /*
+        //REGISTER OBSTICLESPAWNER METHODS
+        public void RegisterBoss1(GameObject go) => boss1Instances.Add(go);
+        public void RegisterIce(GameObject go) => iceInstances.Add(go);
+        public void RegisterScorePU(GameObject go) => scorePickups.Add(go);
+        public void RegisterJumpPU(GameObject go) => jumpPickups.Add(go);
+        public void RegisterInvsPU(GameObject go) => invinciblePickups.Add(go);
+        */
+        
+        //PICK UP ACTIVATIONS --------------------------------------------------
         //DEACTIVATE PICK UPS
         public void DeactivatePickUps()
         {
-            pickUpScore.SetActive(false);
-            pickUpJump.SetActive(false);
-            pickUpInv.SetActive(false);
+            if (!_isRunnerScene) return;
+            
+            isPickUpActive = true;
+            
+            foreach (var p in scorePickups)
+            {
+                p.GetComponent<OffScreenHider>().Hide();
+            }
+            
+            foreach (var p in jumpPickups)
+            {
+                p.GetComponent<OffScreenHider>().Hide();
+            }
+            
+            foreach (var p in invinciblePickups)
+            {
+                p.GetComponent<OffScreenHider>().Hide();
+            }
         }
 
         //REACTIVATE PICK UPS
-        public void ReactivatePickUps()
+        private void ReactivatePickUps()
         {
-            pickUpScore.SetActive(true);
-            pickUpJump.SetActive(true);
-            pickUpInv.SetActive(true);
+            if (!_isRunnerScene) return;
+            
+            isPickUpActive = false;
+            
+            GameObject[] scorePickups = GameObject.FindGameObjectsWithTag("ScorePickup");
+            foreach (var p in scorePickups)
+            {
+                p.GetComponent<OffScreenHider>().Show();
+            }
+
+            GameObject[] jumpPickups = GameObject.FindGameObjectsWithTag("JumpPickup");
+            foreach (var p in jumpPickups)
+            {
+                p.GetComponent<OffScreenHider>().Show();
+            }
+
+            GameObject[] invinciblePickups = GameObject.FindGameObjectsWithTag("InvinciblePickup");
+            foreach (var p in invinciblePickups)
+            {
+                p.GetComponent<OffScreenHider>().Show();
+            }
         }
         
-        //STUFF FOR INVINCIBILITY
+        //STUFF FOR INVINCIBILITY------------------------------------------
         public void StartInvincibility()
         {
+            if (!_isRunnerScene) return;
+            /*
             if (_invincibleRoutine != null)
                 StopCoroutine(_invincibleRoutine);
+            */
 
+            Debug.Log("Invs PickUp routine called");
             _invincibleRoutine = StartCoroutine(InvinsibilityPickUpActivate());
         }
 
         public void StopInvincibilityEarly()
         {
+            if (!_isRunnerScene) return;
+            
             if (_invincibleRoutine != null)
                 StopCoroutine(_invincibleRoutine);
 
             PlayerControllerRemake.IsInvincible = false;
-            InvinsPickUp.IsInvPickUpActive = false;
+            isInvsPUActive = false;
             isPickUpActive = false;
             ReactivatePickUps();
             Debug.Log("Invincibility ended early due to death collision.");
         }
-
-
         
+        //PICK UP COROUTINES-----------------------------------------------
         //FOR DOUBLE SCORE PICK UP
         public IEnumerator DoubleScorePickUpActivate()
         {
             //LevelInfo.ScoreCount = LevelInfo.ScoreCount + 2;
             Debug.Log("Score PickUp Coroutine Activated");
-
+            
+            //set countdown number for ui
+            levelInfo.StartPickUpCountDown(10);
+            
             //lasts 10 seconds
             yield return new WaitForSeconds(10f);
+            
+            //RESET
+            isScorePUActive = false;
             isPickUpActive = false;
-            DoubleScorePickUp.IsDSPickUpActive = false;
-            DubbleJumpPickUp.IsDJPickUpActive = false;
-            InvinsPickUp.IsInvPickUpActive = false;
+            levelInfo.DisablePickUpUI();
+            levelInfo.DisableTimerUI();
+            DeactivatePickUps();
             ReactivatePickUps();
+            
+            Debug.Log("Double Score expired");
         }
 
         //FOR DOUBLE JUMP PICK UP
         public IEnumerator DoubleJumpPickUpActivate()
         {
-            Debug.Log("Jump PickUp Method Activated");
+            Debug.Log("Jump PickUp coroutine Activated");
             PlayerControllerRemake.AllowDoubleJump = true;
             
+            //set countdown number for ui
+            levelInfo.StartPickUpCountDown(10);
+            
             //lasts 8 seconds
-            yield return new WaitForSeconds(8f);
+            yield return new WaitForSeconds(10f);
+            
+            //RESET
+            PlayerControllerRemake.AllowDoubleJump = false;
+            isJumpPUActive = false;
             isPickUpActive = false;
-            DoubleScorePickUp.IsDSPickUpActive = false;
-            DubbleJumpPickUp.IsDJPickUpActive = false;
-            InvinsPickUp.IsInvPickUpActive = false;
+            levelInfo.DisablePickUpUI();
+            levelInfo.DisableTimerUI();
+            DeactivatePickUps();
             ReactivatePickUps();
+            
+            Debug.Log("Double Jump expired");
         }
         
         public IEnumerator InvinsibilityPickUpActivate()
         {
-            Debug.Log("Inv PickUp Method Activated");
+            Debug.Log("Inv PickUp coroutine Activated");
+            
             PlayerControllerRemake.IsInvincible = true;
             
-            //lasts 5 seconds
-            yield return new WaitForSeconds(5f);
+            //set countdown number for ui
+            levelInfo.StartPickUpCountDown(20);
+            
+            //lasts 20 seconds
+            yield return new WaitForSeconds(20f);
+            
+            //RESET EVERYTHING
             PlayerControllerRemake.IsInvincible = false;
+            isInvsPUActive = false;
             isPickUpActive = false;
-            DoubleScorePickUp.IsDSPickUpActive = false;
-            DubbleJumpPickUp.IsDJPickUpActive = false;
-            InvinsPickUp.IsInvPickUpActive = false;
+            levelInfo.DisablePickUpUI();
+            levelInfo.DisableTimerUI();
+            DeactivatePickUps();
             ReactivatePickUps();
             
             Debug.Log("Invincibility expired");
         }
-            
-            
-            /*
-            //FOR INVINSIBILITY PICK UP
-            //check if you should chnage to a coroutine later
-            public static void InvinsibilityPickUpActivate()
+        
+        //BOSS-------------------------------------------
+        //REACTIVATE BOSS
+        private void ReactivateBossPrefs()
+        {
+            //SHOW WAVE
+            //i yet again realise i cant spell. 
+            //correct spelling is obstacle but my world my rules i guess
+            foreach (var boss in FindObjectOfType<ObsticleSpawner>().bosses1)
+                boss.GetComponent<OffScreenHider>().Show();
+            foreach (var ice in FindObjectOfType<ObsticleSpawner>().ices)
+                ice.GetComponent<OffScreenHider>().Show();
+
+        }
+        
+        //DEACTIVATE BOSS
+        public void DeactivateBossPrefs()
+        {
+            // HIDE wave
+            foreach (var boss in FindObjectOfType<ObsticleSpawner>().bosses1)
+                boss.GetComponent<OffScreenHider>().Hide();
+            foreach (var ice in FindObjectOfType<ObsticleSpawner>().ices)
+                ice.GetComponent<OffScreenHider>().Hide();
+        }
+        
+        //BOSS COROUTINE
+        IEnumerator BossCycleLoop()
+        {
+            while (_isRunnerScene)
             {
-                Debug.Log("Inv PickUp Method Activated");
+                //WAIT 30 SECS
+                yield return new WaitForSeconds(10f);
+
+                Debug.Log("Boss 1 wave starting!");
+                //play SFX
+
+                //ACTIVATE DEACTIVATED PREFABS
+                ReactivateBossPrefs();
+
+                //UPDATE UI TO SHOW BOSS SPAWNED
+                Debug.Log("UpdateBossUI");
+                levelInfo.levelBack.SetActive(true);
+                levelInfo.bossBack.SetActive(true);
+                levelInfo.levelDisplay.GetComponent<TMPro.TMP_Text>().text = "LEVEL 1";
+                levelInfo.bossDisplay.GetComponent<TMPro.TMP_Text>().text = "ICE GLOB ATTACKING";
+
+                //TIMING FOR THE BOSS 1
+                yield return new WaitForSeconds(10f);
+
+                Debug.Log("Boss 1 END");
+
+                //DEACTIVATE BOSS AGAIN
+                DeactivateBossPrefs();
+
+                //DEACTIVATE BOSS UI
+                levelInfo.levelBack.SetActive(false);
+                levelInfo.bossBack.SetActive(false);
+
+                //INCREASE SCORE FOR PASSING BOSS ALIVE
+                if (isAlive == true)
+                {
+                    LevelInfo.ScoreCount += 30;
+                    levelInfo.UpdateScoreUI();
+                }
             }
-            */
+            
+            
+        }
+
+        
+        //RESET GAME FOR LOOP-----------------------------------------------
+        public void ResetGame()
+        {
+            //RESET PLAYER IF THERE ISNT ONE
+            PlayerControllerRemake.IsAlive = true;
+            PlayerControllerRemake.IsInvincible = false;
+            PlayerControllerRemake.AllowDoubleJump = false;
+            if (thePlayer != null)
+            {
+                //POSITION PLAYER
+                isAlive = true;
+                thePlayer.transform.position = new Vector3(0, 1.3f, -22.38f);
+                thePlayer.GetComponent<PlayerControllerRemake>().enabled = true;
+            }
+            
+            //RESET UI
+            levelInfo.ResetUI();
+            
+            //RESET PICK UP VALUES
+            isPickUpActive = false;
+            isScorePUActive = false;
+            isJumpPUActive = false;
+            isInvsPUActive = false;
+            
+            //RESET PLAYER VALUES
+            PlayerControllerRemake.IsAlive = true;
+            PlayerControllerRemake.IsInvincible = false;
+            PlayerControllerRemake.AllowDoubleJump = false;
+            
+            //MAKE SURE MUSIC HAS STOPPED
+            AudioManager.Instance.gameplayBGM.Stop();
+            
+            //RESET SPAWNING POOL
+            SegmentPooler.Instance.ResetSegmentPool();
+            FindObjectOfType<SegmentController>().ResetZPosition();
+            
+            //STOP ANYTHING ELSE
+            StopAllCoroutines();
+        }
+
     }
 }

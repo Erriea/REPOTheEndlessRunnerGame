@@ -5,28 +5,30 @@ namespace Remakes
 {
     public class DoubleScorePickUp : MonoBehaviour
     {
-        //INSTATIATE FX
-        [SerializeField] AudioSource pickUpFX;
-    
-        //TO CHECK IF PICKUP IS ACTIVE
-        public static bool IsDSPickUpActive = false;
-    
         //WHEN IS TRIGGERED
         void OnTriggerEnter(Collider other) //collider refers to player collider
         {
-            //INFORM GAME MANAGER OF PICK UP AND DEACTIVATE OTHERS
-            TheGameManager.Instance.isPickUpActive = true;
-            TheGameManager.Instance.DeactivatePickUps();
+            //PLAY AUDIO
+            AudioManager.Instance.pickUpSFX.Play();
             
-            //PLAY AUDIO ONCE
-            pickUpFX.Play();
-            //SET PICKUP EFFECTS ACTIVE
-            IsDSPickUpActive = true;
-            StartCoroutine(TheGameManager.Instance.DoubleScorePickUpActivate());
-            Debug.Log("Score PickUp Activated");
+            //CHECK CONDITIONS FOR ACTIVATION
+            if (!other.CompareTag("Player") || !TheGameManager.Instance._isRunnerScene)
+                return;
+            
+            //INFORM GAME MANAGER OF ACTIVATION
+            var gm = TheGameManager.Instance;
+            gm.isPickUpActive    = true;
+            gm.isScorePUActive   = true;
+            gm.DeactivatePickUps();
+
+            //UPDATE UI
+            gm.levelInfo.UpdatePickUpUI();
+            
+            //LAUNCH DOUBLE SCORE ROUTINE
+            gm.StartCoroutine(gm.DoubleScorePickUpActivate());
             
             //DISABLE PICKUP
-            this.gameObject.SetActive(false);
+            //gameObject.SetActive(false);
         }
     }
 }

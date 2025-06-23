@@ -4,27 +4,31 @@ namespace Remakes
 {
     public class DubbleJumpPickUp : MonoBehaviour
     {
-        //INSTATIATE FX
-        [SerializeField] AudioSource pickUpFX;
-    
-        //TO CHECK IF PICKUP IS ACTIVE
-        public static bool IsDJPickUpActive = false;
-    
         //WHEN IS TRIGGERED
         void OnTriggerEnter(Collider other) //collider refers to player collider
         {
-            //INFORM GAME MANAGER OF PICK UP AND DEACTIVATE OTHERS
-            TheGameManager.Instance.isPickUpActive = true;
-            TheGameManager.Instance.DeactivatePickUps();
+            //PLAY AUDIO
+            AudioManager.Instance.pickUpSFX.Play();
             
-            //PLAY AUDIO ONCE
-            pickUpFX.Play();
-            IsDJPickUpActive = true;
-            TheGameManager.Instance.StartCoroutine(TheGameManager.Instance.DoubleJumpPickUpActivate());
-            Debug.Log("Jump PickUp Activated");
+            //CHECK CONDITIONS FOR ACTIVATION
+            if (!other.CompareTag("Player") || !TheGameManager.Instance._isRunnerScene)
+                return;
+            
+            //INFORM GAME MANAGER OF PICK UP AND DEACTIVATE OTHERS
+            var gm = TheGameManager.Instance;
+            gm.isPickUpActive  = true;
+            gm.isJumpPUActive  = true;
+            gm.DeactivatePickUps();
+            
+            //UPDATE UI
+            gm.levelInfo.UpdatePickUpUI();
+            
+            //SET GAMEMANAGER COROUTINE
+            gm.StartCoroutine(gm.DoubleJumpPickUpActivate());
+            Debug.Log("Jump PickUp routine called");
             
             //DISABLE PICKUP
-            this.gameObject.SetActive(false);
+            //this.gameObject.SetActive(false);
         }
     }
 }

@@ -1,50 +1,59 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 //CONTROL TIMING FOR SEGMENT APPEAR AND DISAPPEARANCE
 namespace Remakes
 {
+    
     public class SegmentController : MonoBehaviour
     {
-        //SEGMENT ARRAY
-        //if add more segments add here
-        public GameObject[] segmentPrefab;
-
         //VARIABLES FOR SEGMENT PLACEMENT
-        [SerializeField] private int zPos = 50;
-        [SerializeField] bool createSegment = false;
-        [SerializeField] int segmentNum;
-        
-        void Update()
+        //start at spawn
+        [SerializeField] private int zPos = 0;
+
+
+        void Start()
         {
-            //IF SEGMENT IS BEING CREATED, DONT MAKE ANOTHER UNTIL CURRENT ON IS DONE
-            if (createSegment == false)
+            StartCoroutine(SpawnSegmentLoop());
+        }
+        
+        //NEW SUMMONER
+        IEnumerator SpawnSegmentLoop()
+        {
+            while (true)
             {
-                createSegment = true;
-                StartCoroutine(SegmentGenerator());
+                //finds random segment
+                GameObject newSegment = SegmentPooler.Instance.GetRandomSegment();
+                
+                //continues if random segment exists
+                if (newSegment != null)
+                {
+                    //moves segment into place
+                    newSegment.transform.position = new Vector3(0, 0, zPos);
+                    newSegment.SetActive(true);
+                    zPos += 50;
+                    
+                    //deactivates segment
+                    StartCoroutine(DisableAfterSeconds(newSegment, 60f));
+                }
+
+                yield return new WaitForSeconds(1f); // Wait between spawns
             }
         }
 
-        //COROUTINE TO SPAWN IN RANDOM NEW TILE EVERY 3 SECONDS
-        IEnumerator SegmentGenerator()
+        //DESUMMONER
+        IEnumerator DisableAfterSeconds(GameObject segment, float seconds)
         {
-            //GENERATE RANDOM TILE TO PLACE NEXT
-            segmentNum = Random.Range(0, segmentPrefab.Length);
-            
-            //GENERATE TILE IN GAME 50 Z SPACES FROM PREVIOUS TILE
-            //Create instance of <objectName>.<x,y,z>,Quaternion.identity
-            //Instantiate(segmentPrefab[segmentNum], new Vector3(0, 0, zPos), Quaternion.identity);
-            GameObject newSegment = Instantiate(segmentPrefab[segmentNum], new Vector3(0, 0, zPos), Quaternion.identity);
-            //Destroy(newSegment, 40f);// Destroys it after 40 seconds automatically
-            
-            //increase zPos
-            zPos += 50;
-            
-            //wait 3s before next segment spawn
-            yield return new WaitForSeconds(3f);
-            createSegment = false;
-            
-            yield return new WaitForSeconds(10f);
-            Destroy(newSegment);
+            yield return new WaitForSeconds(seconds);
+            segment.SetActive(false);
         }
+        
+        //RESET
+        public void ResetZPosition()
+        {
+            zPos = 0;
+        }
+
     }
+    
 }

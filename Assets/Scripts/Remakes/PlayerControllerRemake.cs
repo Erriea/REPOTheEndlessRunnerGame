@@ -8,16 +8,20 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
     {
         //PLAYER COMPONENTS FOR JUMP
         [SerializeField]  Rigidbody rb;
-        [SerializeField]  AudioSource jumpFX;//Audio
         [SerializeField] int maxJumpCount = 1;
-        public static bool _isGrounded = false;
+        private bool _isGrounded = false;
         private int _jumpCount = 0;
         public static bool AllowDoubleJump = false;
         
         //PLAYER MOVEMENT STATS
-        [SerializeField] float playerSpeed = 2f;
+        [SerializeField] float playerSpeed = 6f;
+        [SerializeField] float speedIncreaseRate = 0.2f; // units per second
+        [SerializeField] float maxSpeed = 35f;
         [SerializeField] float horizontalSpeed = 3f;
-        [SerializeField] public static float jumpForce = 8f;
+        [SerializeField] float horizontalSpeedIncreaseRate = 0.1f;
+        [SerializeField] float maxHorizontalSpeed = 20f;
+        [SerializeField] float jumpForce = 8f;
+
         
         //PLAYER MOVEMENT LIMITATIONS
         public float rightLimit = 7.5f;
@@ -35,11 +39,16 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
         
         void Update()
         {
-            //STUFF FOR DOUBLE JUMP
+            if (!TheGameManager.Instance._isRunnerScene) return;
+            
+            //CHECK IF PLAYER ON GROUND
             _isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
-
             if (_isGrounded)
                 _jumpCount = 0;
+            
+            //GRADUALLY INCREASE SPEED
+            playerSpeed = Mathf.Min(playerSpeed + speedIncreaseRate * Time.deltaTime, maxSpeed);
+            horizontalSpeed = Mathf.Min(horizontalSpeed + horizontalSpeedIncreaseRate * Time.deltaTime, maxHorizontalSpeed);
             
             //CONTINUOUS FORWARD MOTION
             /*
@@ -61,7 +70,7 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
                 MoveRight();
             }
 
-            //JUMP
+            // CHECK FOR JUMP
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 //CHECK IF PLAYER ON GROUND
@@ -74,6 +83,8 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
         //MOVE PLAYER LEFT
         private void MoveLeft()
         {
+            if (!TheGameManager.Instance._isRunnerScene) return;
+            
             //LIMIT SO PLAYER NOT FALL OFF PLATFORM ON LEFT SIDE
             if (this.gameObject.transform.position.x > leftLimit)
             {
@@ -84,6 +95,8 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
         //MOVE PLAYER RIGHT
         private void MoveRight()
         {
+            if (!TheGameManager.Instance._isRunnerScene) return;
+            
             //LIMIT SO PLAYER NOT FALL OFF PLATFORM ON RIGHT SIDE
             if (this.gameObject.transform.position.x < rightLimit)
             {
@@ -94,6 +107,8 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
         //MAKES PLAYER JUMP
         private void Jump()
         {
+            if (!TheGameManager.Instance._isRunnerScene) return;
+            
             if (_isGrounded)
             {
                 _jumpCount = 0; // Reset count on ground
@@ -104,20 +119,10 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
             if (_isGrounded || canDoubleJump)
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                jumpFX.Play();
+                AudioManager.Instance.jumpSFX.Play();
 
                 _jumpCount++;
             }
-
-            
-            /*
-             * //PREVENT INFINITE JUMPING
-                if (_isGrounded)
-                    //rb.AddForce(Vector3.up * jumpForce);
-                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                //PLAY AUDIO ONCE
-                jumpFX.Play();
-             */
         }
     }
 }

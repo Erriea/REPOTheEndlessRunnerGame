@@ -7,19 +7,12 @@ namespace Remakes
 {
     public class MainMenuControl : MonoBehaviour
     {
-        //INSTATIATE FX
-        [SerializeField] AudioSource buttonFX;
-        
         [SerializeField] GameObject fadeOut;
         
         void Start()
         {
-        
-        }
-        
-        void Update()
-        {
-        
+            //START MENU MUSIC
+            AudioManager.Instance.menuBGM.Play();
         }
 
         public void StartGame()
@@ -29,10 +22,26 @@ namespace Remakes
 
         IEnumerator StartButton()
         {
-            buttonFX.Play();
+            AudioManager.Instance.buttonSFX.Play();
             fadeOut.SetActive(true);
             yield return new WaitForSeconds(1f);
+            AudioManager.Instance.menuBGM.Stop();
             SceneManager.LoadScene(1);
+            //enable the GamemanagerObject for the scene
+            //gameObject.SetActive(true);
+        }
+        
+        public void ViewLeaderBoard()
+        {
+            StartCoroutine(LeaderBoardButton());
+        }
+
+        IEnumerator LeaderBoardButton()
+        {
+            AudioManager.Instance.buttonSFX.Play();
+            fadeOut.SetActive(true);
+            yield return new WaitForSeconds(1f);
+            SceneManager.LoadScene(2);
         }
     }
 }

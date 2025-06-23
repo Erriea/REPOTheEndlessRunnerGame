@@ -4,26 +4,23 @@ namespace Remakes
 {
     public class ScoreCollisionDetect : MonoBehaviour
     {
-        [SerializeField] GameObject thePlayer;
-
         //WHEN COLLISION IS TRIGGERED
         void OnTriggerEnter(Collider other)//collider refered to here is the players collider
         {
-            Debug.Log("Score collision detected");
+            Debug.Log("Score triggered");
+            // Check if the thing that triggered this is the player
+            if (!other.CompareTag("Player"))
+                return;
 
-            //if double score active -> activates method
-            if (DoubleScorePickUp.IsDSPickUpActive)
-            {
-                //StartCoroutine(TheGameManager.instance.DoubleScorePickUpActivate());
-                LevelInfo.ScoreCount = LevelInfo.ScoreCount + 2;
-                Debug.Log("Score pickup method called in ScoreCollisionDetect.");
-            }
-            else //score increase as usual
-            {
-                Debug.Log("Player hit a score trigger");
-                LevelInfo.ScoreCount = LevelInfo.ScoreCount + 1;
-            }
-
+            //CHECK IF CONDITIONS ARE MET
+            var gm = TheGameManager.Instance;
+            if (gm.isScorePUActive == true)
+                LevelInfo.ScoreCount += 2;
+            else if (gm.isScorePUActive == false)
+                LevelInfo.ScoreCount += 1;
+            
+            //UPDATE SCORE ON UI
+            gm.levelInfo.UpdateScoreUI();
         }
     }
 }

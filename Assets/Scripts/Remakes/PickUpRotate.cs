@@ -4,6 +4,7 @@ namespace Remakes
 {
     public class PickUpRotate : MonoBehaviour
     {
+        
         [SerializeField] float rotateSpeed = 1f;
         
         void Update()
