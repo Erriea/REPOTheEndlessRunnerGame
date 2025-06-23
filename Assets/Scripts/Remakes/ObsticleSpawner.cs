@@ -7,10 +7,58 @@ namespace Remakes
     //POPULATER SEGMENTS WITH THE OBSTICLE PREFABS
     public class ObsticleSpawner : MonoBehaviour
     {
-        //LIST TO STORE BOSSE PREFABS THAT MOVE POSITION
-        public List<GameObject> bosses1 = new List<GameObject>();
-        public List<GameObject> ices   = new List<GameObject>();
+        public static ObsticleSpawner Instance;
 
+        void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+        
+        public void PopulateSegment(GameObject segment)
+        {
+            if (TheGameManager.Instance == null)
+            {
+                Debug.LogWarning("GameManager not found, cannot populate segment");
+                return;
+            }
+
+            var gm = TheGameManager.Instance;
+
+            // Go through each child spawn point in this segment
+            foreach (var t in segment.GetComponentsInChildren<Transform>(true))
+            {
+                GameObject prefab = null;
+                Quaternion rot = t.rotation;
+
+                switch (t.tag)
+                {
+                    case "TreeSpawn":          prefab = gm.treePrefab; break;
+                    case "RockSpawn":          prefab = gm.rockPrefab; break;
+                    case "LogSpawn":           prefab = gm.logPrefab; break;
+
+                    case "ScorePickUpSpawn":   prefab = gm.scorePickupPrefab; rot = prefab.transform.rotation; break;
+                    case "JumpPickUpSpawn":    prefab = gm.jumpPickupPrefab; rot = prefab.transform.rotation; break;
+                    case "InvsPickUpSpawn":    prefab = gm.invinciblePickupPrefab; rot = prefab.transform.rotation; break;
+
+                    case "IceSpawn":           prefab = gm.icePrefab; break;
+                    case "Boss1Spawn":         prefab = gm.boss1Prefab; break;
+                }
+
+                if (prefab != null)
+                {
+                    Instantiate(prefab, t.position, rot, segment.transform);
+                }
+            }
+        }
+        
+        /*
         void Start()
         {
             //run the logica as soon as TheGameManager is confirmed in scene
@@ -28,50 +76,38 @@ namespace Remakes
             var gm = TheGameManager.Instance;
             
             //NOW SAFE TO SPAWN-----------------------------
-            /* In this code we will:
+             In this code we will:
              * spawn all of the prefabs that have spawn points set up in this segment
              * set a bool for the prefab to check if it needs a fancy rotation
              * add all of the boss prefabs to a list and hide them until later
-             */
+             
             
             //SUMMON THE NORMAL OBSTICLES
             Spawn("TreeSpawn", gm.treePrefab);
             Spawn("RockSpawn", gm.rockPrefab);
-            Spawn("LogSpawn",  gm.logPrefab);
+            Spawn("LogSpawn", gm.logPrefab);
             
             //SUMMON THE PICK UPS
             //check what isPickup is refering to
             Spawn("ScorePickUpSpawn", gm.scorePickupPrefab, isPickup: true);
-            Spawn("JumpPickUpSpawn",  gm.jumpPickupPrefab, isPickup: true);
-            Spawn("InvsPickUpSpawn",  gm.invinciblePickupPrefab, isPickup: true);
+            Spawn("JumpPickUpSpawn", gm.jumpPickupPrefab, isPickup: true);
+            Spawn("InvsPickUpSpawn", gm.invinciblePickupPrefab, isPickup: true);
             
             //SUMMON THE BOSS1 PREFABS
-            //Method(tagName, where initialised in gm, where it stored in list)
-            Spawn("IceSpawn",   gm.icePrefab,   registerList: ices);
-            Spawn("Boss1Spawn", gm.boss1Prefab, registerList: bosses1);
-            
-            /* OLD WAY WITH TAGS JUST INCASE NEW WAY FAILS ME
-            SpawnObstacleWithTag("TreeSpawn", TheGameManager.Instance.treePrefab);
-            SpawnObstacleWithTag("RockSpawn", TheGameManager.Instance.rockPrefab);
-            SpawnObstacleWithTag("LogSpawn", TheGameManager.Instance.logPrefab);
-
-            SpawnObstacleWithTag("ScorePickUpSpawn", TheGameManager.Instance.scorePickupPrefab);
-            SpawnObstacleWithTag("JumpPickUpSpawn", TheGameManager.Instance.jumpPickupPrefab);
-            SpawnObstacleWithTag("InvsPickUpSpawn", TheGameManager.Instance.invinciblePickupPrefab);
-
-            SpawnObstacleWithTag("IceSpawn", TheGameManager.Instance.icePrefab);
-            SpawnObstacleWithTag("Boss1Spawn", TheGameManager.Instance.boss1Prefab);
-            */
+            //Method(tagName, where initialised in gm)
+            Spawn("IceSpawn", gm.icePrefab);
+            Spawn("Boss1Spawn", gm.boss1Prefab);
         }
 
         //HERE WE DO THE POPULATING OF THE SEGMENT
-        /*
+        
          * find prefab tag
          * find prefabs prefab
          * check if its a pickup
          * regsiter the list
-         */
-        void Spawn(string tag, GameObject prefab, bool isPickup = false, List<GameObject> registerList = null)
+         
+        void Spawn(string tag, GameObject prefab, bool isPickup = false)
+
         {
             //if theres no prefabs, stop running
             if (prefab == null)
@@ -92,20 +128,8 @@ namespace Remakes
                 //does this add the rot stuff for pickups to all the stuff? well find out
                 var instance = Instantiate(prefab, t.position, rot, transform);
 
-                //REGISTER AND HIDE BOSS STUFF
-                if (registerList != null)
-                {
-                    registerList.Add(instance);
-
-                    var hider = instance.GetComponent<OffScreenHider>();
-                    if (hider != null)
-                        hider.Hide();
-                    else
-                    {
-                        Debug.LogWarning($"No {nameof(OffScreenHider)} found on {t.name}");
-                    }
-                }
+                Instantiate(prefab, t.position, rot, transform);
             }
-        }
+        }*/
     }
 }

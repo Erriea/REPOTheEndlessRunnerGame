@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Remakes
@@ -6,28 +7,31 @@ namespace Remakes
     [DisallowMultipleComponent]
     public class OffScreenHider : MonoBehaviour
     {
-        [Tooltip("Y to push offscreen")]
-        public float offscreenY = 50f;
-
-        float _origY;
-
-        void Awake()
+        public void HideAllWithTag(string tag)
         {
-            _origY = transform.position.y;
+            GameObject[] objs = GameObject.FindGameObjectsWithTag(tag);
+            foreach (GameObject obj in objs)
+            {
+                foreach (Renderer r in obj.GetComponentsInChildren<Renderer>(true))
+                    r.enabled = false;
+
+                foreach (Collider c in obj.GetComponentsInChildren<Collider>(true))
+                    c.enabled = false;
+            }
         }
 
-        public void Hide()
+        public void ShowAllWithTag(string tag)
         {
-            var p = transform.position;
-            p.y = offscreenY;
-            transform.position = p;
+            GameObject[] objs = GameObject.FindGameObjectsWithTag(tag);
+            foreach (GameObject obj in objs)
+            {
+                foreach (Renderer r in obj.GetComponentsInChildren<Renderer>(true))
+                    r.enabled = true;
+
+                foreach (Collider c in obj.GetComponentsInChildren<Collider>(true))
+                    c.enabled = true;
+            }
         }
 
-        public void Show()
-        {
-            var p = transform.position;
-            p.y = _origY;
-            transform.position = p;
-        }
     }
 }

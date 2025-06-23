@@ -21,6 +21,7 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
         [SerializeField] float horizontalSpeedIncreaseRate = 0.1f;
         [SerializeField] float maxHorizontalSpeed = 20f;
         [SerializeField] float jumpForce = 8f;
+        public float currentSpeed;
 
         
         //PLAYER MOVEMENT LIMITATIONS
@@ -48,6 +49,7 @@ namespace Remakes // IN SEPARATE FOLDER WITHIN SCRIPTS TO AVOID CONFUSION
             
             //GRADUALLY INCREASE SPEED
             playerSpeed = Mathf.Min(playerSpeed + speedIncreaseRate * Time.deltaTime, maxSpeed);
+            currentSpeed = rb.linearVelocity.z;
             horizontalSpeed = Mathf.Min(horizontalSpeed + horizontalSpeedIncreaseRate * Time.deltaTime, maxHorizontalSpeed);
             
             //CONTINUOUS FORWARD MOTION

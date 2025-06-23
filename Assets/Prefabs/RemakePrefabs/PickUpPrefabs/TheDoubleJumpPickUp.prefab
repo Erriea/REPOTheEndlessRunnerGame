@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1286315148126940465}
   - component: {fileID: 5861404218231845173}
   - component: {fileID: 499448207442617974}
-  - component: {fileID: -2323086738464370905}
   m_Layer: 0
   m_Name: TheDoubleJumpPickUp
   m_TagString: JumpPickup
@@ -138,16 +137,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b00b29328dfaec478c0bff1a1628955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-2323086738464370905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2278562727096550640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c2eb31098ef69429d867eba6044414, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offscreenY: 50

@@ -1578,6 +1578,8 @@ GameObject:
   - component: {fileID: 646232784}
   - component: {fileID: 646232783}
   - component: {fileID: 646232782}
+  - component: {fileID: 646232785}
+  - component: {fileID: 646232786}
   m_Layer: 0
   m_Name: SegmentController
   m_TagString: Untagged
@@ -1637,6 +1639,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &646232785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646232781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6b10addaa7640144ba0f25e646d348e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &646232786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646232781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87c2eb31098ef69429d867eba6044414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &671159069
 GameObject:
   m_ObjectHideFlags: 0

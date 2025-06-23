@@ -164,7 +164,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2234161414164635873}
-  - component: {fileID: 5578720140215935219}
   m_Layer: 0
   m_Name: TheSegment8
   m_TagString: Untagged
@@ -189,18 +188,6 @@ Transform:
   - {fileID: 4437949587392115825}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5578720140215935219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3184911125142190833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6b10addaa7640144ba0f25e646d348e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4108262571953568948
 GameObject:
   m_ObjectHideFlags: 0

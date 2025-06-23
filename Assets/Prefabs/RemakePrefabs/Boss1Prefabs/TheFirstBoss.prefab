@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3885843707638897533}
   - component: {fileID: 7094734383311451925}
   - component: {fileID: 6514345416432871846}
-  - component: {fileID: 3022375264932191041}
   m_Layer: 0
   m_Name: TheFirstBoss
   m_TagString: Boss1
@@ -78,19 +77,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelInfo: {fileID: 0}
---- !u!114 &3022375264932191041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 94835227368921418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c2eb31098ef69429d867eba6044414, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offscreenY: 50
 --- !u!1 &319131608125585606
 GameObject:
   m_ObjectHideFlags: 0

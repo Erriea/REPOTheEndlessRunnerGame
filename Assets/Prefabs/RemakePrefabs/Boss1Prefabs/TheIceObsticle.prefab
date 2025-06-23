@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 636291831929685650}
   - component: {fileID: 5965870378233298867}
   - component: {fileID: -8217683062865112714}
-  - component: {fileID: 1895208152151170258}
   m_Layer: 0
   m_Name: TheIceObsticle
   m_TagString: Ice
@@ -92,19 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 1
---- !u!114 &1895208152151170258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2374314778885542891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c2eb31098ef69429d867eba6044414, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offscreenY: 50
 --- !u!1 &3631687577683462676
 GameObject:
   m_ObjectHideFlags: 0

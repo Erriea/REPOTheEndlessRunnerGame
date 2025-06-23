@@ -33,6 +33,11 @@ namespace Remakes
                     newSegment.SetActive(true);
                     zPos += 50;
                     
+                    //spawn obsticles
+                    ObsticleSpawner.Instance.PopulateSegment(newSegment);
+                    TheGameManager.Instance.DeactivateBossPrefs();
+                    
+                    
                     //deactivates segment
                     StartCoroutine(DisableAfterSeconds(newSegment, 60f));
                 }

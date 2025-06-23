@@ -34,9 +34,16 @@ namespace Remakes
         [SerializeField] public GameObject jumpPickupPrefab;
         [SerializeField] public GameObject invinciblePickupPrefab;
 
-        //BOSS 1 PREFABS
+        //BOSS 1 STUFF
         [SerializeField] public GameObject icePrefab;
         [SerializeField] public GameObject boss1Prefab;
+        
+        //BOSS2 STUFF
+        //[HideInInspector] public GameObject boss2;
+        //private GameObject bossTwo;
+        
+        //SPAWNED OBSTICLES
+        public OffScreenHider offScreenHider;
         
         //PICK UP ACTIVE CHECKS
         [HideInInspector] public bool isPickUpActive = false;
@@ -47,29 +54,9 @@ namespace Remakes
         //SCENE STUFF
         [HideInInspector] public bool _isRunnerScene;
         Coroutine _invincibleRoutine;
-
-        //PICK UPS AGAIN
-        public GameObject[] scorePickups;
-        public GameObject[] jumpPickups;
-        public GameObject[] invinciblePickups;
         
         //BOSS AND ICE
-        public static GameObject[] ices;
-        public static GameObject[] bosses1;
-        
-        
-        /*
-        //HIDE/SHOW PREFABS LISTS
-        [HideInInspector] public List<GameObject> boss1Instances    = new List<GameObject>();
-        [HideInInspector] public List<GameObject> iceInstances      = new List<GameObject>();
-        
-        
-        [HideInInspector] public List<GameObject> scorePickups      = new List<GameObject>();
-        [HideInInspector] public List<GameObject> jumpPickups       = new List<GameObject>();
-        [HideInInspector] public List<GameObject> invinciblePickups = new List<GameObject>();
-        */
-
-
+        public bool isBoss1Active;
 
         //SINGLETON FOR GAME MANAGER
         void Awake()
@@ -100,35 +87,30 @@ namespace Remakes
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             _isRunnerScene = (scene.buildIndex == 1);
-            //isAlive = true;
+            
+            
             
             if (_isRunnerScene)// Your Runner scene
             {
-                //set boss and ice
-                ices = GameObject.FindGameObjectsWithTag("Ice");
-                bosses1 = GameObject.FindGameObjectsWithTag("Boss1");
+                //start music
+                AudioManager.Instance.gameplayBGM.Play();
                 
-                //pick ups
-                scorePickups = GameObject.FindGameObjectsWithTag("ScorePickup");
-                jumpPickups = GameObject.FindGameObjectsWithTag("JumpPickup");
-                invinciblePickups = GameObject.FindGameObjectsWithTag("InvinciblePickup");
-                
+                isBoss1Active = false;
+                // HIDE BOSS
                 
                 Debug.Log("Runner set true");
                 //enable script
                 enabled = true;
                 
                 levelInfo = FindObjectOfType<LevelInfo>();
-
+                offScreenHider = FindObjectOfType<OffScreenHider>();
                 ResetGame();
                 SpawnPlayer();
-            
-                //levelInfo = FindObjectOfType<LevelInfo>();
+                
                 SegmentPooler.Instance.ResetSegmentPool();
                 FindObjectOfType<SegmentController>().ResetZPosition();
                 
-                //start music
-                AudioManager.Instance.gameplayBGM.Play();
+                
             
                 //start the boss looping timer
                 StartCoroutine(BossCycleLoop());
@@ -178,20 +160,11 @@ namespace Remakes
             
             isPickUpActive = true;
             
-            foreach (var p in scorePickups)
-            {
-                p.GetComponent<OffScreenHider>().Hide();
-            }
+            offScreenHider.HideAllWithTag("ScorePickup");
+
+            offScreenHider.HideAllWithTag("JumpPickup");
             
-            foreach (var p in jumpPickups)
-            {
-                p.GetComponent<OffScreenHider>().Hide();
-            }
-            
-            foreach (var p in invinciblePickups)
-            {
-                p.GetComponent<OffScreenHider>().Hide();
-            }
+            offScreenHider.HideAllWithTag("InvinciblePickup");
         }
 
         //REACTIVATE PICK UPS
@@ -201,23 +174,11 @@ namespace Remakes
             
             isPickUpActive = false;
             
-            GameObject[] scorePickups = GameObject.FindGameObjectsWithTag("ScorePickup");
-            foreach (var p in scorePickups)
-            {
-                p.GetComponent<OffScreenHider>().Show();
-            }
+            offScreenHider.ShowAllWithTag("ScorePickup");
 
-            GameObject[] jumpPickups = GameObject.FindGameObjectsWithTag("JumpPickup");
-            foreach (var p in jumpPickups)
-            {
-                p.GetComponent<OffScreenHider>().Show();
-            }
-
-            GameObject[] invinciblePickups = GameObject.FindGameObjectsWithTag("InvinciblePickup");
-            foreach (var p in invinciblePickups)
-            {
-                p.GetComponent<OffScreenHider>().Show();
-            }
+            offScreenHider.ShowAllWithTag("JumpPickup");
+            
+            offScreenHider.ShowAllWithTag("InvinciblePickup");
         }
         
         //STUFF FOR INVINCIBILITY------------------------------------------
@@ -320,27 +281,37 @@ namespace Remakes
         }
         
         //BOSS-------------------------------------------
+        
         //REACTIVATE BOSS
-        private void ReactivateBossPrefs()
+        private void ReactivateBossPrefs() //*****************************
         {
             //SHOW WAVE
             //i yet again realise i cant spell. 
             //correct spelling is obstacle but my world my rules i guess
-            foreach (var boss in FindObjectOfType<ObsticleSpawner>().bosses1)
-                boss.GetComponent<OffScreenHider>().Show();
-            foreach (var ice in FindObjectOfType<ObsticleSpawner>().ices)
-                ice.GetComponent<OffScreenHider>().Show();
-
+            //foreach (var b in ObsticleSpawner.bosses1) b.GetComponent<OffScreenHider>().Show();
+            //foreach (var i in ObsticleSpawner.ices)    i.GetComponent<OffScreenHider>().Show();
+            
+            offScreenHider.ShowAllWithTag("Ice");
+            offScreenHider.ShowAllWithTag("Boss1");
+            
         }
         
         //DEACTIVATE BOSS
-        public void DeactivateBossPrefs()
+        public void DeactivateBossPrefs()//**********************************
         {
             // HIDE wave
-            foreach (var boss in FindObjectOfType<ObsticleSpawner>().bosses1)
-                boss.GetComponent<OffScreenHider>().Hide();
-            foreach (var ice in FindObjectOfType<ObsticleSpawner>().ices)
-                ice.GetComponent<OffScreenHider>().Hide();
+            //foreach (var b in ObsticleSpawner.bosses1) b.GetComponent<OffScreenHider>().Hide();
+            //foreach (var i in ObsticleSpawner.ices)    i.GetComponent<OffScreenHider>().Hide();
+            
+            offScreenHider.HideAllWithTag("Ice");
+            offScreenHider.HideAllWithTag("Boss1");
+        }
+        
+        IEnumerator DelayedBossDeactivate()
+        {
+            // wait a few frames or seconds until segments are spawned
+            yield return new WaitForSeconds(0.5f);
+            DeactivateBossPrefs();
         }
         
         //BOSS COROUTINE
@@ -351,12 +322,14 @@ namespace Remakes
                 //WAIT 30 SECS
                 yield return new WaitForSeconds(10f);
 
-                Debug.Log("Boss 1 wave starting!");
                 //play SFX
+                Debug.Log("Boss 1 wave starting!");
+                
+                isBoss1Active = true;
 
-                //ACTIVATE DEACTIVATED PREFABS
+                //ACTIVATE DEACTIVATED PREFABS//*************************
                 ReactivateBossPrefs();
-
+                
                 //UPDATE UI TO SHOW BOSS SPAWNED
                 Debug.Log("UpdateBossUI");
                 levelInfo.levelBack.SetActive(true);
@@ -368,8 +341,8 @@ namespace Remakes
                 yield return new WaitForSeconds(10f);
 
                 Debug.Log("Boss 1 END");
-
-                //DEACTIVATE BOSS AGAIN
+                
+                //DEACTIVE BOSS
                 DeactivateBossPrefs();
 
                 //DEACTIVATE BOSS UI
@@ -382,9 +355,32 @@ namespace Remakes
                     LevelInfo.ScoreCount += 30;
                     levelInfo.UpdateScoreUI();
                 }
+                /*
+                 
+                //PEACE TIME
+                yield return new WaitForSeconds(10f);
+                
+                //ACTIVATE BOSS 2
+                Debug.Log("UpdateBossUI");
+                levelInfo.levelBack.SetActive(true);
+                levelInfo.bossBack.SetActive(true);
+                levelInfo.levelDisplay.GetComponent<TMPro.TMP_Text>().text = "LEVEL 2";
+                levelInfo.bossDisplay.GetComponent<TMPro.TMP_Text>().text = "PARASITE ATTACKING";
+                
+                yield return new WaitForSeconds(30f);
+                
+                //DEACTIVATE BOSS UI
+                levelInfo.levelBack.SetActive(false);
+                levelInfo.bossBack.SetActive(false);
+
+                //INCREASE SCORE FOR PASSING BOSS ALIVE
+                if (isAlive == true)
+                {
+                    LevelInfo.ScoreCount += 30;
+                    levelInfo.UpdateScoreUI();
+                }
+                */
             }
-            
-            
         }
 
         
